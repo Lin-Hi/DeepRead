@@ -1,0 +1,29 @@
+# DeepRead 依赖列表
+# 安装命令: pip install -r requirements.txt
+
+# ========== 核心依赖 ==========
+pydantic>=2.0.0
+pydantic-settings>=2.0.0
+python-dotenv>=1.0.0
+
+# ========== PDF 处理 ==========
+marker-pdf>=1.10.0
+pymupdf>=1.27.0
+
+# ========== LLM API ==========
+openai>=1.0.0
+httpx>=0.25.0
+
+# ========== 工具库 ==========
+tenacity>=8.0.0  # 重试机制
+rich>=13.0.0     # 终端美化输出
+
+# ========== 可选依赖 ==========
+# dagre-python  # 不可用，使用固定模板布局替代
+networkx>=3.0   # 图算法（备用）
+
+# ========== 开发依赖 ==========
+pytest>=7.0.0
+pytest-asyncio>=0.21.0
+black>=23.0.0    # 代码格式化
+mypy>=1.0.0      # 类型检查

@@ -1,0 +1,20 @@
+{
+	"nodes":[
+		{"id":"node_metadata","type":"text","text":"## 文献元数据\n\n**标题**: Analyzing common structures in EA modeling\n\n**作者**: Ahmed Hussein\n\n**年份**: 2022","x":50,"y":50,"width":300,"height":200,"color":"#3b82f6"},
+		{"id":"node_research_question","type":"text","text":"## 研究问题\n\n如何识别和提取不同企业架构建模框架中的共同元素？","x":400,"y":50,"width":300,"height":200,"color":"#f97316"},
+		{"id":"node_methodology","type":"text","text":"## 方法论\n\n- Systematic Literature Review\n- Taxonomy Development\n- Multilevel Modeling","x":50,"y":300,"width":300,"height":200,"color":"#8b5cf6"},
+		{"id":"node_findings","type":"text","text":"## 主要发现\n\n- TOGAF, ArchiMate, DoDAF, IAF 是最常用的框架\n- 成功识别了跨框架的共同元素\n- 提出了可扩展的多层模型","x":400,"y":300,"width":300,"height":200,"color":"#22c55e"},
+		{"id":"node_limitations","type":"text","text":"## 局限性与贡献\n\n**局限性**: 仅分析学术文献，未涵盖工业实践\n\n**贡献**: 为企业架构建模提供了统一的元素分类法","x":50,"y":550,"width":300,"height":150,"color":"#ef4444"},
+		{"id":"node_thoughts","type":"text","text":"## 个人思考\n\n这篇论文的方法论（SLR + Taxonomy）可以借鉴到我的研究中。多层模型的思想也很有启发性。","x":400,"y":550,"width":300,"height":150,"color":"#6b7280"}
+	],
+	"edges":[
+		{"id":"edge_meta_to_question","fromNode":"node_metadata","fromSide":"right","toNode":"node_research_question","toSide":"left","label":"提出问题"},
+		{"id":"edge_question_to_method","fromNode":"node_research_question","fromSide":"bottom","toNode":"node_methodology","toSide":"top","label":"采用方法"},
+		{"id":"edge_method_to_findings","fromNode":"node_methodology","fromSide":"right","toNode":"node_findings","toSide":"left","label":"得出发现"},
+		{"id":"edge_findings_to_limitations","fromNode":"node_findings","fromSide":"left","toNode":"node_limitations","toSide":"top","label":"讨论局限"},
+		{"id":"edge_meta_to_method","fromNode":"node_metadata","fromSide":"bottom","toNode":"node_methodology","toSide":"top","label":"背景支撑"},
+		{"id":"edge_findings_to_thoughts","fromNode":"node_findings","fromSide":"bottom","toNode":"node_thoughts","toSide":"top","label":"启发思考"},
+		{"id":"edge_limitations_to_thoughts","fromNode":"node_limitations","fromSide":"right","toNode":"node_thoughts","toSide":"left","label":"批判分析"},
+		{"id":"edge_question_to_findings","fromNode":"node_research_question","fromSide":"bottom","toNode":"node_findings","toSide":"top","label":"直接回答"}
+	]
+}

@@ -1,0 +1,20 @@
+{
+	"nodes":[
+		{"id":"node_metadata","type":"text","text":"**Analyzing common structures in EA modeling**\n\nAuthor: Ahmed Hussein\nYear: 2022\nJournal: KTH\n\nCitekey: `Hussein2022EA`","x":0,"y":20,"width":300,"height":200,"color":"#3b82f6"},
+		{"id":"node_methodology","type":"text","text":"### Methodology\n\n1. **Systematic Literature Review (SLR)**\n   - 搜索学术数据库\n   - 筛选相关论文\n   - 提取框架信息\n\n2. **Taxonomy Development**\n   - 比较不同框架的元素\n   - 识别共同属性\n   - 构建分类体系\n\n3. **Multilevel Modeling**\n   - 设计可扩展的元模型\n   - 支持领域特定扩展","x":-25,"y":420,"width":350,"height":380,"color":"#8b5cf6"},
+		{"id":"node_research_question","type":"text","text":"### Research Gap & Hypothesis\n\n如何识别和提取不同企业架构建模框架中的共同元素？这篇论文通过系统文献综述（SLR）方法，分析了 TOGAF、ArchiMate、DoDAF 和 IAF 等主流框架，提取了它们的核心概念并构建了多层模型。","x":720,"y":-55,"width":350,"height":350,"color":"#f97316"},
+		{"id":"node_thoughts","type":"text","text":"### Connections & Action Items\n\n这篇论文的方法论（SLR + Taxonomy）可以借鉴到我的研究中。特别是多层模型的思想，对于构建领域特定的建模语言很有启发。\n\n**Action Items:**\n- [ ] 阅读引用的 SLR 方法论文献\n- [ ] 尝试将分类法应用到我的研究领域","x":720,"y":940,"width":350,"height":320,"color":"#6b7280"},
+		{"id":"node_limitations","type":"text","text":"### Critical Analysis\n\n**局限性**:\n- 仅分析学术文献\n- 未涵盖工业实践中的实际应用\n- 样本可能不够全面\n\n**贡献**:\n- 为企业架构建模提供了统一的元素分类法\n- 为开发可定制的建模框架奠定基础","x":0,"y":940,"width":350,"height":320,"color":"#ef4444"},
+		{"id":"node_findings","type":"text","text":"### Key Findings\n\n- **最常用框架**: TOGAF, ArchiMate, DoDAF, IAF\n- **共同元素识别**: 成功提取了跨框架的核心概念\n- **多层模型**: 提出了可扩展的企业架构建模元模型\n- **应用价值**: 帮助终端用户选择合适的建模元素\n- **扩展性**: 展示了模型如何支持不同领域的需求","x":720,"y":420,"width":350,"height":380,"color":"#22c55e"}
+	],
+	"edges":[
+		{"id":"edge_0","fromNode":"node_metadata","fromSide":"right","toNode":"node_research_question","toSide":"left","label":"提出问题"},
+		{"id":"edge_1","fromNode":"node_metadata","fromSide":"bottom","toNode":"node_methodology","toSide":"top","label":"背景支撑"},
+		{"id":"edge_2","fromNode":"node_research_question","fromSide":"bottom","toNode":"node_findings","toSide":"top","label":"直接回答"},
+		{"id":"edge_3","fromNode":"node_methodology","fromSide":"right","toNode":"node_findings","toSide":"left","label":"得出发现"},
+		{"id":"edge_4","fromNode":"node_findings","fromSide":"left","toNode":"node_limitations","toSide":"top","label":"讨论局限"},
+		{"id":"edge_5","fromNode":"node_findings","fromSide":"bottom","toNode":"node_thoughts","toSide":"top","label":"启发思考"},
+		{"id":"edge_6","fromNode":"node_limitations","fromSide":"right","toNode":"node_thoughts","toSide":"left","label":"批判分析"},
+		{"id":"edge_7","fromNode":"node_research_question","fromSide":"left","toNode":"node_methodology","toSide":"right","label":"采用方法"}
+	]
+}

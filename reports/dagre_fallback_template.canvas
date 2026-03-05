@@ -1,0 +1,20 @@
+{
+	"nodes":[
+		{"id":"metadata","type":"text","x":50,"y":50,"width":300,"height":150,"text":"文献元数据"},
+		{"id":"research_question","type":"text","x":400,"y":50,"width":300,"height":150,"text":"研究问题"},
+		{"id":"methodology","type":"text","x":50,"y":300,"width":300,"height":200,"text":"方法论"},
+		{"id":"findings","type":"text","x":400,"y":300,"width":300,"height":200,"text":"主要发现"},
+		{"id":"limitations","type":"text","x":50,"y":550,"width":300,"height":150,"text":"贡献与局限性"},
+		{"id":"thoughts","type":"text","x":400,"y":550,"width":300,"height":150,"text":"个人思考"}
+	],
+	"edges":[
+		{"id":"edge_0","fromNode":"metadata","toNode":"research_question","fromSide":"right","toSide":"left"},
+		{"id":"edge_1","fromNode":"metadata","toNode":"methodology","fromSide":"bottom","toSide":"top"},
+		{"id":"edge_2","fromNode":"research_question","toNode":"findings","fromSide":"bottom","toSide":"top"},
+		{"id":"edge_3","fromNode":"methodology","toNode":"findings","fromSide":"right","toSide":"left"},
+		{"id":"edge_4","fromNode":"findings","toNode":"limitations","fromSide":"left","toSide":"top"},
+		{"id":"edge_5","fromNode":"findings","toNode":"thoughts","fromSide":"bottom","toSide":"top"},
+		{"id":"edge_6","fromNode":"limitations","toNode":"thoughts","fromSide":"right","toSide":"left"},
+		{"id":"edge_7","fromNode":"research_question","toNode":"methodology","fromSide":"bottom","toSide":"top"}
+	]
+}

@@ -1,0 +1,20 @@
+{
+	"nodes":[
+		{"id":"node_metadata","type":"text","text":"## 文献元数据\n\n**标题**: Analyzing common structures in EA modeling\n\n**作者**: Ahmed Hussein\n\n**年份**: 2022","x":50,"y":50,"width":300,"height":200,"color":"#3b82f6"},
+		{"id":"node_research_question","type":"text","text":"## 研究问题\n\n如何识别和提取不同企业架构建模框架中的共同元素？这篇论文通过系统文献综述（SLR）方法，分析了 TOGAF、ArchiMate、DoDAF 和 IAF 等主流框架，提取了它们的核心概念并构建了多层模型。","x":500,"y":50,"width":350,"height":350,"color":"#f97316"},
+		{"id":"node_methodology","type":"text","text":"## 方法论\n\n1. **Systematic Literature Review (SLR)**\n   - 搜索学术数据库\n   - 筛选相关论文\n   - 提取框架信息\n\n2. **Taxonomy Development**\n   - 比较不同框架的元素\n   - 识别共同属性\n   - 构建分类体系\n\n3. **Multilevel Modeling**\n   - 设计可扩展的元模型\n   - 支持领域特定扩展","x":50,"y":450,"width":350,"height":380,"color":"#8b5cf6"},
+		{"id":"node_findings","type":"text","text":"## 主要发现\n\n- **最常用框架**: TOGAF, ArchiMate, DoDAF, IAF\n- **共同元素识别**: 成功提取了跨框架的核心概念\n- **多层模型**: 提出了可扩展的企业架构建模元模型\n- **应用价值**: 帮助终端用户选择合适的建模元素\n- **扩展性**: 展示了模型如何支持不同领域的需求","x":500,"y":450,"width":350,"height":380,"color":"#22c55e"},
+		{"id":"node_limitations","type":"text","text":"## 局限性与贡献\n\n**局限性**:\n- 仅分析学术文献\n- 未涵盖工业实践中的实际应用\n- 样本可能不够全面\n\n**贡献**:\n- 为企业架构建模提供了统一的元素分类法\n- 为开发可定制的建模框架奠定基础","x":50,"y":900,"width":350,"height":320,"color":"#ef4444"},
+		{"id":"node_thoughts","type":"text","text":"## 个人思考\n\n这篇论文的方法论（SLR + Taxonomy）可以借鉴到我的研究中。特别是多层模型的思想，对于构建领域特定的建模语言很有启发。\n\n**行动项**:\n- [ ] 阅读引用的 SLR 方法论文献\n- [ ] 尝试将分类法应用到我的研究领域","x":500,"y":900,"width":350,"height":320,"color":"#6b7280"}
+	],
+	"edges":[
+		{"id":"edge_0","fromNode":"node_metadata","toNode":"node_research_question","fromSide":"right","toSide":"left"},
+		{"id":"edge_1","fromNode":"node_metadata","toNode":"node_methodology","fromSide":"bottom","toSide":"top"},
+		{"id":"edge_2","fromNode":"node_research_question","toNode":"node_findings","fromSide":"bottom","toSide":"top"},
+		{"id":"edge_3","fromNode":"node_methodology","toNode":"node_findings","fromSide":"right","toSide":"left"},
+		{"id":"edge_4","fromNode":"node_findings","toNode":"node_limitations","fromSide":"left","toSide":"top"},
+		{"id":"edge_5","fromNode":"node_findings","toNode":"node_thoughts","fromSide":"bottom","toSide":"top"},
+		{"id":"edge_6","fromNode":"node_limitations","toNode":"node_thoughts","fromSide":"right","toSide":"left"},
+		{"id":"edge_7","fromNode":"node_research_question","toNode":"node_methodology","fromSide":"left","toSide":"right"}
+	]
+}
