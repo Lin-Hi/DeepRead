@@ -9,6 +9,7 @@ src/
 ├── main.py              # 主脚本入口，命令行交互
 ├── config.py            # 配置管理（pydantic-settings）
 ├── exceptions.py        # 统一异常类定义
+├── logger.py            # 全局日志基础设施（按天滚动文件+控制台双输出）
 ├── utils.py             # 工具函数集
 ├── state_tracker.py     # 状态追踪（增量更新）
 ├── pdf_processor.py     # PDF 处理（Marker 调用）
@@ -26,6 +27,7 @@ src/
 main.py
 ├── config.py (被所有模块导入，使用 `from src.config import settings`)
 ├── exceptions.py
+├── logger.py (被所有模块导入，使用 `from src.logger import get_logger`)
 ├── utils.py
 ├── state_tracker.py
 │   └── config.py

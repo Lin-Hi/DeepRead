@@ -68,14 +68,14 @@ class TestSettingsDefaults:
 
 
 class TestSettingsValidate:
-    """测试 Settings.validate()"""
+    """测试 Settings.check_config()"""
 
     def test_validate_with_valid_key(self):
         with patch.dict("os.environ", {"API_KEY": "sk-test123456"}):
             from importlib import reload
             import src.config as config_module
             reload(config_module)
-            is_valid, errors = config_module.settings.validate()
+            is_valid, errors = config_module.settings.check_config()
             # validate() 的核心功能：返回 (bool, list)
             assert isinstance(is_valid, bool)
             assert isinstance(errors, list)
@@ -86,12 +86,12 @@ class TestSettingsValidate:
             from importlib import reload
             import src.config as config_module
             reload(config_module)
-            is_valid, errors = config_module.settings.validate()
+            is_valid, errors = config_module.settings.check_config()
             assert not is_valid
             assert len(errors) > 0
 
     def test_validate_returns_tuple(self):
         from src.config import settings
-        result = settings.validate()
+        result = settings.check_config()
         assert isinstance(result, tuple)
         assert len(result) == 2

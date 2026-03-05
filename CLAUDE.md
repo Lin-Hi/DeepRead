@@ -39,19 +39,21 @@
 ## 三、项目状态概览
 
 ### Phase 完成进度
-| Phase     | 名称         | 状态                                                     |
-| --------- | ------------ | -------------------------------------------------------- |
-| Phase 1   | 项目初始化   | ✅ 完成                                                   |
-| Phase 1.5 | 技术验证     | ✅ 完成                                                   |
-| Phase 2   | 核心功能开发 | ✅ 完成（所有源代码模块已创建）                           |
-| Phase 3   | 工作流整合   | ✅ 完成（真实 PDF E2E 测试通过）                          |
-| Phase 4   | 测试与优化   | ✅ 完成                                                   |
-| Phase 5   | 边界用例测试 | ⏳ 进行中（系统极特殊防护与 Mock 已完成，算法层真实待补） |
+| Phase     | 名称         | 状态                                                        |
+| --------- | ------------ | ----------------------------------------------------------- |
+| Phase 1   | 项目初始化   | ✅ 完成                                                      |
+| Phase 1.5 | 技术验证     | ✅ 完成                                                      |
+| Phase 2   | 核心功能开发 | ✅ 完成（所有源代码模块已创建）                              |
+| Phase 3   | 工作流整合   | ✅ 完成（真实 PDF E2E 测试通过）                             |
+| Phase 4   | 测试与优化   | ✅ 完成                                                      |
+| Phase 5   | 边界用例测试 | ✅ 完成（异常 PDF 拦截、加密 PDF 拦截、空文件优雅降级）      |
+| Phase 6   | 重构收尾展示 | ⏳ 进行中（B/C 提案落地完成，演示数据接入完成，待最终 push） |
 
 ### 核心模块清单
 ```
 src/
 ├── main.py              # CLI 入口与工作流编排
+├── logger.py            # 全局日志（TimedRotating 双 Handler）
 ├── pdf_processor.py     # PDF → Markdown (Marker)
 ├── summarizer.py        # LLM 调用与摘要生成
 ├── canvas_builder.py    # Canvas JSON 生成器
@@ -62,10 +64,10 @@ src/
 ```
 
 ### Canvas 布局规范 (v3)
-- **布局参数**：详见 [`src/canvas_builder.py:_create_nodes()`](src/canvas_builder.py)
+- **布局参数**：详见 [`src/canvas_builder.py`](src/canvas_builder.py)
 - **节点类型**：6 个节点（文献元数据、研究问题、方法论、主要发现、贡献与局限性、个人思考）
 - **边连接**：8 条带标签的边
-- **参考文件**：[`reports/canvas_schema_test_v4.canvas`](reports/canvas_schema_test_v4.canvas)
+- **参考文件**：[`reports/design/`](reports/design/)
 
 ---
 
