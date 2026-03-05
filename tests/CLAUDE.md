@@ -23,7 +23,7 @@ tests/
 ├── test_pdf_processor.py      # [IN: src.pdf_processor (mock)] [OUT: 操作断言] - PDFPreprocessor+PDFProcessor (10 用例)
 ├── test_summarizer.py         # [IN: src.summarizer (mock openai)] [OUT: LLM流断言] - Summarizer 全流程 (11 用例)
 ├── test_edge_cases.py         # [IN: 失败响应/损坏文件] [OUT: 异常捕获断言] - LLM 网络故障与假文件测试 (4 用例)
-├── generate_test_canvas.py    # [IN: CanvasBuilder] [OUT: Canvas 文件] - 手动运行验证 v3 布局效果
+├── test_canvas_manual.py      # [IN: CanvasBuilder] [OUT: Canvas 文件] - 手动运行验证 v3 布局效果
 └── conftest.py                # [IN: pytest] [OUT: Fixtures] - pytest 全局 Fixtures 和环境模拟
 ```
 

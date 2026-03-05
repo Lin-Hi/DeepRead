@@ -210,7 +210,7 @@ def test_fallback_layout():
         "edges": canvas_edges
     }
 
-    output_file = Path("reports/dagre_fallback_template.canvas")
+    output_file = Path("reports/templates/dagre_fallback_template.canvas")
     with open(output_file, 'w', encoding='utf-8') as f:
         json.dump(canvas_data, f, indent=2, ensure_ascii=False)
 
