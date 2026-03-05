@@ -176,32 +176,26 @@ def process_single_pdf(
 
         # Step 5: 生成 Summary（可选跳过）
         summary_file = output_folder / "Summary.md"
+        summary_data = {}  # 用于传递给 Canvas
         if not skip_summary:
             print(f"   5️⃣  生成 AI 总结...", end=" ")
-            summarizer.generate_summary(md_content, summary_file)
+            summary_data = summarizer.generate_summary(md_content, summary_file)
             print("✓")
         else:
-            print(f"   5️⃣  跳过 AI 总结")
+            print(f"   5️⃣  跳过 AI 总结（Canvas 内容将为占位符）")
 
         # Step 6: 生成单文献 Canvas
+        # 将 AI 总结字段 + 元数据字段合并为 canvas 输入
         print(f"   6️⃣  生成知识卡片...", end=" ")
         canvas_file = output_folder / f"{folder_name}.canvas"
-        # 如果没有 AI 总结，使用 metadata 构建基础 summary dict
-        if summary_file.exists():
-            # 读取已写入的 Summary 内容构建展示 dict
-            canvas_summary = {
-                "title": title or folder_name,
-                "year": year,
-                "first_author": first_author,
-            }
-        else:
-            canvas_summary = {
-                "title": title or folder_name,
-                "year": year,
-                "first_author": first_author,
-            }
+        canvas_input = {
+            "title": title or folder_name,
+            "year": year,
+            "first_author": first_author,
+            **summary_data,  # 包含 methodology/key_findings 等 AI 分析字段
+        }
         canvas_builder.create_paper_canvas(
-            canvas_summary,
+            canvas_input,
             output_folder,
             folder_name
         )
@@ -260,8 +254,10 @@ def update_master_map(canvas_builder: CanvasBuilder, state_tracker: StateTracker
         print("   没有已完成的文献")
         return
 
-    canvas_builder.update_master_map(papers)
+    # update_master_map 接受 literature_dir: Path，不是 papers 列表
+    canvas_builder.update_master_map(settings.output_path)
     print(f"   ✓ 总图谱已更新（{len(papers)} 篇文献）")
+
 
 
 def main():

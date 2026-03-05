@@ -1,144 +1,144 @@
-# Prompt- Literature Note Generator for a PhD-V2
+# Prompt - 文献笔记生成器（博士/硕士研究版 v2）
 
-Role & Context: Act as a Senior Research Fellow assisting a Master CS student. Your goal is to critically analyze the attached PDF and extract the "DNA" of the paper into a structured Obsidian Literature Note.
+角色与背景：你是一位资深研究员，正在协助一名计算机科学硕士生深度分析文献。你的目标是批判性地阅读所给 PDF，将论文的"DNA"提炼为结构化的 Obsidian 文献笔记。
 
-Task: Read the document and generate a comprehensive literature note in raw Markdown format. You must strictly adhere to the user's existing Zotero/Obsidian template structure while filling it with high-level critical analysis.
+任务：阅读文档，以**纯 Markdown 格式**生成一份完整的文献笔记。你必须严格遵守以下 Zotero/Obsidian 模板结构，同时填入高水平的批判性分析内容。
 
-Output Constraints:
+输出规范：
 
-1. **Format**: Output ONLY the Markdown code block.
+1. **格式**：仅输出 Markdown 内容块。
 
-2. **Frontmatter**: Use the exact YAML fields provided in the template below.
+2. **前置元数据（Frontmatter）**：使用模板中指定的精确 YAML 字段。
 
-3. **Dataview** **Compatibility**: You must include the `> [!Synthesis]` callout with the specific `**Contribution**::` and `**Related**::` keys.
+3. **Dataview 兼容性**：必须包含 `> [!Synthesis]` 标注块，以及特定的 `**Contribution**::` 和 `**Related**::` 键。
 
-4. **Linking**: Use *Wikilinks* extensively for key concepts, methodology names, computer science concept and related terms.
+4. **内部链接**：对关键概念、方法名、计算机科学术语及相关词汇广泛使用 *Wikilinks* 格式。
 
-5. **Tone:** Academic, critical, and structured.
+5. **语气**：学术性、批判性、结构清晰。
 
-# Use this specific Markdown Template:
+# 请使用以下 Markdown 模板：
 
-- citekey: {{camelCase: FirstAuthor+FirstWordOfTitle+Year}}
+- citekey: {{驼峰命名：第一作者姓氏+标题首词+年份}}
 - status: read
-- dateread: {{Current Date YYYY-MM-DD}}
+- dateread: {{当前日期 YYYY-MM-DD}}
 
 ---
 
-> #### Citation
+> #### 引用格式
 >
-> {{Full APA Style Citation}}  
+> {{完整 APA 格式引用}}
 
-> #### Synthesis
+> #### 综述
 >
-> **Contribution**:: {{A single, concise sentence stating the paper's primary contribution to the field.}}
-> **Related**:: {{Key Concept 1}}, {{Key Concept 2}},{{Related Method}}
+> **Contribution**:: {{一句话说明论文对该领域的核心贡献。}}
+> **Related**:: {{核心概念 1}}, {{核心概念 2}}, {{相关方法}}
 
-> #### Metadata
+> #### 元数据
 >
-> **Title**:: {{Paper Title}}
-> **Year**:: {{Year}}
-> **Journal**:: {{Journal Name}}
-> **FirstAuthor**:: {{First Author Name}}
+> **Title**:: {{论文标题}}
+> **Year**:: {{年份}}
+> **Journal**:: {{期刊名称}}
+> **FirstAuthor**:: {{第一作者全名}}
 > **ItemType**:: journalArticle
 
-> #### Abstract
+> #### 摘要
 >
-> {{A 2-3 sentence high-level summary of the paper's core contribution and argument.}}
+> {{2-3 句话概括论文的核心贡献与论点。}}
 
 ## Notes
 
-### 🚀 Research Gap & Hypothesis
+### 🚀 研究缺口与假设
 
-#### Problem Context
+#### 问题背景
 
-- **Core** **Issue**: {{The fundamental problem}}
-- **Current Knowledge Gap**: {{What is missing in the literature?}}
-- **Clinical/Scientific Need:** {{Why is this urgent?}}
+- **核心问题**：{{现有工作企图解决的根本问题}}
+- **当前知识缺口**：{{文献中缺少什么？}}
+- **科学/实践需求**：{{为何这个问题紧迫？}}
 
-#### Central Hypothesis
+#### 核心假设
 
-{{State the main hypothesis clearly.}}
+{{清晰阐述论文的主要假设或研究问题。}}
 
-### 🔬 Methodology & Evidence Base
+### 🔬 方法论与证据基础
 
-#### Study Characteristics
+#### 研究特征
 
-- **Type**: {{e.g., Systematic Review, RCT, In-vitro}}
-- **Scope**: {{Description of scope}}
+- **类型**：{{如：系统综述、RCT、实验研究、理论分析等}}
+- **研究范围**：{{范围描述}}
 
-#### Key Techniques Evaluated
+#### 核心技术/方法
 
-- {{Technique 1}}: {{Details on how it was applied}}
+- {{技术一}}：{{该方法的具体应用方式}}
 
-- {{Technique 2}}: {{Details on how it was applied}}
-
-
-### 📊 Key Mechanisms & Findings
-
-#### {{Mechanism/Theme 1}}
-
-1. **Concept**: {{Description}}
-
-2. **Findings:**
-   - {{Key Result 1}}
-   - {{Key Result 2}}
+- {{技术二}}：{{该方法的具体应用方式}}
 
 
-#### {{Mechanism/Theme 2}}
+### 📊 核心机制与发现
 
-1. **Concept**: {{Description}}
+#### {{机制/主题 一}}
 
-2. **Findings:**
-   - {{Key Result 1}}
+1. **概念**：{{描述}}
 
-
-### 🎯 Critical Analysis
-
-#### Strengths
-
-1. **{{Strength** **1}}**: {{Description}}
-
-2. **{{Strength2}}**: {{Description}}
-
-#### Limitations
-
-1. **{{Weakness 1}}**: {{Description}}
-
-2. **{{Weakness 2}}:** {{Description}}
-
-#### Open Questions
-
-1. **{{Question 1}}?**
-
-2. **{{Question 2}}?**
-
-### 🔗 Connections & Integration
-
-#### Practical Implementation
-
-- **Protocols**: {{Dosing, timing, settings, etc.}}
-- **Tools**: {{Tool}}
-
-#### Personal Relevance
-
-- **Research** **Interests**: {{How this fits general research in this field}}
-- **Application**: {{Potential use cases}}
-
-### 📋 Action Items & Next Steps
-
-- [ ] {{Question to investigate}}
-
-- [ ] {{Practical step to test}}
-
-- [ ] {{Knowledge gap to address}}
+2. **发现：**
+   - {{关键结果 1}}
+   - {{关键结果 2}}
 
 
-## Summary & Conclusion
+#### {{机制/主题 二}}
 
-> **Key Takeaway**: {{One sentence powerful summary.}}
+1. **概念**：{{描述}}
 
-#### Final Assessment
+2. **发现：**
+   - {{关键结果 1}}
 
-- **Innovation**: {{High/Med/Low}}
-- **Evidence:** {{High/Med/Low}}
-- **Clinical Potential:** {{High/Med/Low}}
+
+### 🎯 批判性分析
+
+#### 优势
+
+1. **{{优势 1}}**：{{描述}}
+
+2. **{{优势 2}}**：{{描述}}
+
+#### 局限性
+
+1. **{{局限 1}}**：{{描述}}
+
+2. **{{局限 2}}**：{{描述}}
+
+#### 开放问题
+
+1. **{{问题 1}}？**
+
+2. **{{问题 2}}？**
+
+### 🔗 关联与整合
+
+#### 实践层面
+
+- **具体做法**：{{协议、时序、配置等}}
+- **工具**：{{使用或推荐的工具}}
+
+#### 与个人研究的关联
+
+- **研究兴趣**：{{与本研究方向的契合点}}
+- **应用场景**：{{潜在应用方式}}
+
+### 📋 行动项与后续步骤
+
+- [ ] {{待深入调研的问题}}
+
+- [ ] {{待验证的假设或实验}}
+
+- [ ] {{待填补的知识缺口}}
+
+
+## 总结与结论
+
+> **核心要点**：{{一句话有力总结。}}
+
+#### 最终评估
+
+- **创新性**：{{高/中/低}}
+- **证据质量**：{{高/中/低}}
+- **实践潜力**：{{高/中/低}}

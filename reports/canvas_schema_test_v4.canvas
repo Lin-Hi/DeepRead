@@ -1,130 +1,20 @@
 {
-  "nodes": [
-    {
-      "id": "node_fb7f61d8ae32_1772674217",
-      "type": "text",
-      "x": 0,
-      "y": 20,
-      "width": 300,
-      "height": 200,
-      "text": "## 文献元数据\n\n**Test Paper for Layout Verification**\n\n作者: Test Author\n年份: 2024\n期刊: Test Journal\n\n引用键: `Author2024Test`",
-      "color": "#3b82f6"
-    },
-    {
-      "id": "node_33b59a47d5dd_1772674217",
-      "type": "text",
-      "x": -25,
-      "y": 420,
-      "width": 350,
-      "height": 380,
-      "text": "## 方法论\n\nTest methodology with multiple steps:\n1. Step one\n2. Step two\n3. Step three\nTest methodology with multiple steps:\n1. Step one\n2. Step two\n3. Step three\nTest methodology with multiple steps:\n1. Step one\n2. Step two\n3. Step three\n",
-      "color": "#8b5cf6"
-    },
-    {
-      "id": "node_153acd8421fe_1772674217",
-      "type": "text",
-      "x": 720,
-      "y": -55,
-      "width": 350,
-      "height": 350,
-      "text": "## 研究问题\n\nThis is a test research gap description to verify the layout. This is a test research gap description to verify the layout. This is a test research gap description to verify the layout. This is a test research gap description to verify the layout. This is a test research gap description to verify the layout. ",
-      "color": "#f97316"
-    },
-    {
-      "id": "node_5024116fd339_1772674217",
-      "type": "text",
-      "x": 720,
-      "y": 940,
-      "width": 350,
-      "height": 320,
-      "text": "## 个人思考\n\nRelated to software engineering practices.\n\n**行动项:**\n- [ ] Action item 1\n- [ ] Action item 2",
-      "color": "#6b7280"
-    },
-    {
-      "id": "node_5def6ed77581_1772674217",
-      "type": "text",
-      "x": 0,
-      "y": 940,
-      "width": 350,
-      "height": 320,
-      "text": "## 贡献与局限性\n\nStrengths and limitations analysis goes here. Strengths and limitations analysis goes here. Strengths and limitations analysis goes here. Strengths and limitations analysis goes here. ",
-      "color": "#ef4444"
-    },
-    {
-      "id": "node_155f24ccaa21_1772674217",
-      "type": "text",
-      "x": 720,
-      "y": 420,
-      "width": 350,
-      "height": 380,
-      "text": "## 主要发现\n\nKey findings include:\n- Finding A\n- Finding B\n- Finding C\nKey findings include:\n- Finding A\n- Finding B\n- Finding C\nKey findings include:\n- Finding A\n- Finding B\n- Finding C\nKey findings include:\n- Finding A\n- Finding B\n- Finding C\n",
-      "color": "#22c55e"
-    }
-  ],
-  "edges": [
-    {
-      "id": "edge_0",
-      "fromNode": "node_fb7f61d8ae32_1772674217",
-      "fromSide": "right",
-      "toNode": "node_153acd8421fe_1772674217",
-      "toSide": "left",
-      "label": "提出问题"
-    },
-    {
-      "id": "edge_1",
-      "fromNode": "node_fb7f61d8ae32_1772674217",
-      "fromSide": "bottom",
-      "toNode": "node_33b59a47d5dd_1772674217",
-      "toSide": "top",
-      "label": "背景支撑"
-    },
-    {
-      "id": "edge_2",
-      "fromNode": "node_153acd8421fe_1772674217",
-      "fromSide": "bottom",
-      "toNode": "node_155f24ccaa21_1772674217",
-      "toSide": "top",
-      "label": "直接回答"
-    },
-    {
-      "id": "edge_3",
-      "fromNode": "node_33b59a47d5dd_1772674217",
-      "fromSide": "right",
-      "toNode": "node_155f24ccaa21_1772674217",
-      "toSide": "left",
-      "label": "得出发现"
-    },
-    {
-      "id": "edge_4",
-      "fromNode": "node_155f24ccaa21_1772674217",
-      "fromSide": "left",
-      "toNode": "node_5def6ed77581_1772674217",
-      "toSide": "top",
-      "label": "讨论局限"
-    },
-    {
-      "id": "edge_5",
-      "fromNode": "node_155f24ccaa21_1772674217",
-      "fromSide": "bottom",
-      "toNode": "node_5024116fd339_1772674217",
-      "toSide": "top",
-      "label": "启发思考"
-    },
-    {
-      "id": "edge_6",
-      "fromNode": "node_5def6ed77581_1772674217",
-      "fromSide": "right",
-      "toNode": "node_5024116fd339_1772674217",
-      "toSide": "left",
-      "label": "批判分析"
-    },
-    {
-      "id": "edge_7",
-      "fromNode": "node_153acd8421fe_1772674217",
-      "fromSide": "left",
-      "toNode": "node_33b59a47d5dd_1772674217",
-      "toSide": "right",
-      "label": "采用方法"
-    }
-  ]
+	"nodes":[
+		{"id":"node_fb7f61d8ae32_1772674217","type":"text","x":0,"y":20,"width":300,"height":200,"text":"## 文献元数据\n\n**Test Paper for Layout Verification**\n\n作者: Test Author\n年份: 2024\n期刊: Test Journal\n\n引用键: `Author2024Test`","color":"#3b82f6"},
+		{"id":"node_33b59a47d5dd_1772674217","type":"text","x":-25,"y":420,"width":350,"height":380,"text":"## 方法论\n\nTest methodology with multiple steps:\n1. Step one\n2. Step two\n3. Step three\nTest methodology with multiple steps:\n1. Step one\n2. Step two\n3. Step three\nTest methodology with multiple steps:\n1. Step one\n2. Step two\n3. Step three\n","color":"#8b5cf6"},
+		{"id":"node_153acd8421fe_1772674217","type":"text","x":720,"y":-55,"width":350,"height":350,"text":"## 研究问题\n\nThis is a test research gap description to verify the layout. This is a test research gap description to verify the layout. This is a test research gap description to verify the layout. This is a test research gap description to verify the layout. This is a test research gap description to verify the layout. ","color":"#f97316"},
+		{"id":"node_5024116fd339_1772674217","type":"text","x":720,"y":940,"width":350,"height":320,"text":"## 个人思考\n\nRelated to software engineering practices.\n\n**行动项:**\n- [ ] Action item 1\n- [ ] Action item 2","color":"#6b7280"},
+		{"id":"node_5def6ed77581_1772674217","type":"text","x":0,"y":940,"width":350,"height":320,"text":"## 贡献与局限性\n\nStrengths and limitations analysis goes here. Strengths and limitations analysis goes here. Strengths and limitations analysis goes here. Strengths and limitations analysis goes here. ","color":"#ef4444"},
+		{"id":"node_155f24ccaa21_1772674217","type":"text","x":720,"y":420,"width":350,"height":380,"text":"## 主要发现\n\nKey findings include:\n- Finding A\n- Finding B\n- Finding C\nKey findings include:\n- Finding A\n- Finding B\n- Finding C\nKey findings include:\n- Finding A\n- Finding B\n- Finding C\nKey findings include:\n- Finding A\n- Finding B\n- Finding C\n","color":"#22c55e"}
+	],
+	"edges":[
+		{"id":"edge_0","fromNode":"node_fb7f61d8ae32_1772674217","fromSide":"right","toNode":"node_153acd8421fe_1772674217","toSide":"left","label":"提出问题"},
+		{"id":"edge_1","fromNode":"node_fb7f61d8ae32_1772674217","fromSide":"bottom","toNode":"node_33b59a47d5dd_1772674217","toSide":"top","label":"背景支撑"},
+		{"id":"edge_2","fromNode":"node_153acd8421fe_1772674217","fromSide":"bottom","toNode":"node_155f24ccaa21_1772674217","toSide":"top","label":"直接回答"},
+		{"id":"edge_3","fromNode":"node_33b59a47d5dd_1772674217","fromSide":"right","toNode":"node_155f24ccaa21_1772674217","toSide":"left","label":"得出发现"},
+		{"id":"edge_4","fromNode":"node_155f24ccaa21_1772674217","fromSide":"left","toNode":"node_5def6ed77581_1772674217","toSide":"top","label":"讨论局限"},
+		{"id":"edge_5","fromNode":"node_155f24ccaa21_1772674217","fromSide":"bottom","toNode":"node_5024116fd339_1772674217","toSide":"top","label":"启发思考"},
+		{"id":"edge_6","fromNode":"node_5def6ed77581_1772674217","fromSide":"right","toNode":"node_5024116fd339_1772674217","toSide":"left","label":"批判分析"},
+		{"id":"edge_7","fromNode":"node_153acd8421fe_1772674217","fromSide":"left","toNode":"node_33b59a47d5dd_1772674217","toSide":"right","label":"采用方法"}
+	]
 }
