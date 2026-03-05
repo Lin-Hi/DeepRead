@@ -33,6 +33,49 @@ SAMPLE_SUMMARY = {
     "related_concepts": "CNN, RNN, Transformer",
 }
 
+MOCK_MARKDOWN_RESPONSE = """---
+citekey: Smith2024Deep
+status: read
+dateread: 2026-03-05
+---
+
+> #### Citation
+> Smith et al.
+
+> #### 摘要
+> This paper provides an overview of deep learning.
+
+> #### Metadata
+> **Title**:: Deep Learning Overview
+> **Year**:: 2024
+> **FirstAuthor**:: John Smith
+> **Journal**:: Nature ML
+
+## Notes
+
+### 🚀 研究缺口与假设
+Gap exists in scalability.
+核心假设
+Deep learning can solve complex problems.
+
+### 🔬 方法论与证据基础
+Systematic literature review.
+
+### 📊 核心机制与发现
+State-of-the-art results on benchmarks.
+
+### 🧠 批判性分析
+Limitations include dataset bias.
+
+### 🔗 关联与整合
+Related to transfer learning.
+
+### ⚡ 行动项与后续步骤
+Study attention mechanisms.
+
+**核心要点**: Deep learning is powerful.
+"""
+
 
 def _make_mock_openai_response(content: str):
     """构建 Mock OpenAI 响应对象"""
@@ -161,7 +204,7 @@ class TestSummarizerGenerateSummary:
                 summarizer = Summarizer()
                 summarizer.client = MagicMock()
                 summarizer.client.chat.completions.create.return_value = \
-                    _make_mock_openai_response(json.dumps(SAMPLE_SUMMARY))
+                    _make_mock_openai_response(MOCK_MARKDOWN_RESPONSE)
 
                 output_path = tmp_path / "Summary.md"
                 result = summarizer.generate_summary(

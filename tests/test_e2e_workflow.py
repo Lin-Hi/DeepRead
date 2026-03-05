@@ -19,17 +19,17 @@ def test_e2e_successful_workflow(temp_output_dir):
     mock_canvas_builder = MagicMock()
     mock_state_tracker = MagicMock()
 
-    # 设置依赖行为
-    mock_pdf_processor.validate_pdf.return_value = (True, "")
-    mock_pdf_processor.extract_metadata.return_value = {
-        "title": "Test Title", "year": "2023", "first_author": "John"
-    }
-    mock_pdf_processor.convert_to_markdown.return_value = "# Abstract\nContent..."
-    mock_summarizer.generate_summary.return_value = "citekey: John2023\n..."
+    # 模拟行为
+    output_folder = temp_output_dir / "Test_Paper"
+    info = {"title": "Test Title", "year": "2023", "first_author": "John"}
+    mock_pdf_processor.process.return_value = (output_folder, "# Abstract\nContent...", info)
+    mock_summarizer.generate_summary.return_value = {"title": "Test Title", "citekey": "John2023"}
     mock_state_tracker.compute_file_hash.return_value = "fakehash123"
     mock_state_tracker.get_file_record.return_value = None
+    mock_state_tracker.is_processed.return_value = False
 
-    pdf_path = Path("fake_dir/test_document.pdf")
+    pdf_path = temp_output_dir / "test_document.pdf"
+    pdf_path.write_bytes(b"dummy content")
     
     with patch("src.main.settings") as mock_settings:
         mock_settings.output_path = temp_output_dir
@@ -45,18 +45,19 @@ def test_e2e_successful_workflow(temp_output_dir):
 
     assert success is True
     assert msg == "success"
-    mock_pdf_processor.convert_to_markdown.assert_called_once()
+    mock_pdf_processor.process.assert_called_once()
     mock_summarizer.generate_summary.assert_called_once()
     mock_canvas_builder.create_paper_canvas.assert_called_once()
-    mock_state_tracker.update_file_record.assert_called_once()
+    mock_state_tracker.update_file_state.assert_called_once()
 
 def test_e2e_pdf_validation_failure(temp_output_dir):
     """测试 PDF 验证失败情况（如损坏保护）"""
     mock_pdf_processor = MagicMock()
     mock_state_tracker = MagicMock()
     
-    mock_pdf_processor.validate_pdf.return_value = (False, "ERR_PDF_CORRUPTED")
+    mock_pdf_processor.process.side_effect = PDFAccessError("PDF validation failed: ERR_PDF_CORRUPTED", "ERR_PDF_CORRUPTED")
     mock_state_tracker.get_file_record.return_value = None
+    mock_state_tracker.is_processed.return_value = False
 
     success, msg = process_single_pdf(
         Path("broken.pdf"),
@@ -67,8 +68,7 @@ def test_e2e_pdf_validation_failure(temp_output_dir):
     )
 
     assert success is False
-    assert msg == "ERR_PDF_CORRUPTED"
-    mock_pdf_processor.convert_to_markdown.assert_not_called()
+    assert "ERR_PDF_CORRUPTED" in msg
 
 def test_e2e_llm_request_failure(temp_output_dir):
     """测试在遇到网络或 LLM 异常时的捕捉逻辑"""
@@ -76,11 +76,12 @@ def test_e2e_llm_request_failure(temp_output_dir):
     mock_summarizer = MagicMock()
     mock_state_tracker = MagicMock()
 
-    mock_pdf_processor.validate_pdf.return_value = (True, "")
-    mock_pdf_processor.extract_metadata.return_value = {"title": "Timeout Paper"}
-    mock_pdf_processor.convert_to_markdown.return_value = "# Content"
+    output_folder = temp_output_dir / "Timeout_Paper"
+    info = {"title": "Timeout Paper"}
+    mock_pdf_processor.process.return_value = (output_folder, "# Content", info)
     mock_summarizer.generate_summary.side_effect = LLMRequestError("ERR_LLM_TIMEOUT")
     mock_state_tracker.get_file_record.return_value = None
+    mock_state_tracker.is_processed.return_value = False
 
     with patch("src.main.settings") as mock_settings:
         mock_settings.output_path = temp_output_dir

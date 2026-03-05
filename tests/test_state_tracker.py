@@ -51,6 +51,22 @@ class TestStateTrackerInit:
             tracker._load()
             assert "test.pdf" in tracker._state["files"]
 
+    def test_handles_corrupted_state_json(self, tmp_path):
+        """测试 state.json 损坏时，能否自动重置为默认状态而不崩溃"""
+        state_file = tmp_path / "state.json"
+        state_file.write_text("{corrupted_json: true,", encoding="utf-8")
+        
+        with patch("src.config.settings") as mock_settings:
+            mock_settings.state_file = state_file
+            from src.state_tracker import StateTracker
+            tracker = StateTracker.__new__(StateTracker)
+            tracker.state_file = state_file
+            tracker._state = {}
+            tracker._load()
+            assert "version" in tracker._state
+            assert tracker._state["files"] == {}
+
+
 
 class TestStateTrackerComputeHash:
     """测试 StateTracker.compute_hash (静态方法)"""

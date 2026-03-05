@@ -203,7 +203,10 @@ class Summarizer:
             f"dateread: {time.strftime('%Y-%m-%d')}",
             "---",
             "",
-            f"> {summary.get('abstract', '')}",
+            "> #### Metadata",
+            f"> **Title**:: {summary.get('title', '')}",
+            "",
+            f"> #### Abstract\n> {summary.get('abstract', '')}",
             "",
             "> **Key Takeaway**: "
             f"{summary.get('key_takeaway', '')}",
