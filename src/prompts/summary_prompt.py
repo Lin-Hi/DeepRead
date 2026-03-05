@@ -8,6 +8,7 @@
  */
 """
 from pathlib import Path
+from typing import Optional
 
 # Prompt 模板文件路径（与本文件同目录）
 _TEMPLATE_PATH = Path(__file__).parent / "literature_note_template.md"
@@ -24,7 +25,7 @@ def _load_template() -> str:
         )
 
 
-def get_summary_prompt(markdown_content: str, research_context: str = None) -> str:
+def get_summary_prompt(markdown_content: str, research_context: Optional[str] = None) -> str:
     """
     构建用于生成 Summary 的完整 Prompt。
 
@@ -42,7 +43,7 @@ def get_summary_prompt(markdown_content: str, research_context: str = None) -> s
 
 # 向后兼容：保留 SUMMARY_PROMPT 变量（惰性加载）
 # 注意：直接使用 get_summary_prompt() 是推荐方式
-def __getattr__(name: str):
+def __getattr__(name: str) -> str:
     if name == "SUMMARY_PROMPT":
         return _load_template()
     raise AttributeError(f"module {__name__!r} has no attribute {name!r}")

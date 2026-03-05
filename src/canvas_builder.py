@@ -8,7 +8,7 @@
 """
 import json
 from pathlib import Path
-from typing import Optional
+from typing import Any, Dict, List, Optional
 
 from src.config import settings
 from src.utils import generate_node_id
@@ -27,7 +27,7 @@ class CanvasBuilder:
         "thoughts": "#6b7280",      # 灰色 - 个人思考
     }
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.node_width = settings.canvas_node_width
         self.node_height = settings.canvas_node_height
         # 增加间距以避免密集
@@ -216,7 +216,7 @@ class CanvasBuilder:
 
     def _scan_literature_folders(self, literature_dir: Path) -> list:
         """扫描文献目录，获取所有已处理的论文"""
-        papers = []
+        papers: List[Any] = []
 
         if not literature_dir.exists():
             return papers

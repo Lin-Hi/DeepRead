@@ -65,7 +65,7 @@ Keywords: {', '.join(paper.get('keywords', []))}
 
 
 # 向后兼容：保留 RELATION_PROMPT 变量（惰性加载）
-def __getattr__(name: str):
+def __getattr__(name: str) -> str:
     if name == "RELATION_PROMPT":
         return _load_template()
     raise AttributeError(f"module {__name__!r} has no attribute {name!r}")

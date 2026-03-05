@@ -7,7 +7,7 @@
  */
 """
 import hashlib
-import logging
+
 import re
 import shutil
 import unicodedata
@@ -18,37 +18,7 @@ from typing import Optional
 from .config import settings
 
 
-def setup_logging(log_level: Optional[str] = None) -> logging.Logger:
-    """
-    配置日志系统
 
-    Args:
-        log_level: 日志级别，默认从配置读取
-
-    Returns:
-        配置好的 logger 实例
-    """
-    if log_level is None:
-        log_level = settings.log_level
-
-    # 创建日志目录
-    settings.log_path.mkdir(parents=True, exist_ok=True)
-
-    # 生成日志文件名
-    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    log_file = settings.log_path / f"deepread_{timestamp}.log"
-
-    # 配置根日志器
-    logging.basicConfig(
-        level=getattr(logging, log_level.upper()),
-        format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-        handlers=[
-            logging.FileHandler(log_file, encoding="utf-8"),
-            logging.StreamHandler()
-        ]
-    )
-
-    return logging.getLogger("deepread")
 
 
 def compute_file_hash(file_path: Path) -> str:

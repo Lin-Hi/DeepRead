@@ -12,7 +12,7 @@
 import json
 import time
 from pathlib import Path
-from typing import Optional
+from typing import Any, Dict, Optional
 
 from openai import OpenAI
 
@@ -24,7 +24,7 @@ from src.prompts.summary_prompt import get_summary_prompt
 class Summarizer:
     """AI 总结器：两阶段生成文献总结"""
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.client = OpenAI(
             api_key=settings.api_key,
             base_url=settings.api_base_url
@@ -148,6 +148,7 @@ class Summarizer:
                 if attempt == self.max_retries - 1:
                     raise LLMRequestError(f"Failed to generate summary: {e}")
                 time.sleep(5 * (attempt + 1))
+        raise RuntimeError("Unreachable")
 
     def _call_llm(self, prompt: str) -> str:
         """调用 LLM API"""
@@ -160,9 +161,9 @@ class Summarizer:
             temperature=0.3,
             max_tokens=4000
         )
-        return response.choices[0].message.content
+        return str(response.choices[0].message.content or "")
 
-    def _parse_json_response(self, response: str) -> dict:
+    def _parse_json_response(self, response: str) -> Dict[str, Any]:
         """解析 LLM JSON 响应为字典"""
         try:
             if "```json" in response:
@@ -176,7 +177,8 @@ class Summarizer:
             else:
                 json_str = response.strip()
 
-            return json.loads(json_str)
+            resp: Dict[str, Any] = json.loads(json_str)
+            return resp
         except json.JSONDecodeError as e:
             raise LLMValidationError(f"Invalid JSON response: {e}", raw_response=response)
 

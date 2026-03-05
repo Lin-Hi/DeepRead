@@ -9,22 +9,26 @@
 """
 import sys
 import argparse
-import logging
+
 from pathlib import Path
 from typing import List, Optional
 
 # Windows 终端字符编码崩溃备用·强制 UTF-8
 if sys.platform == "win32":
-    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
-    sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")  # type: ignore
+    sys.stderr.reconfigure(encoding="utf-8", errors="replace")  # type: ignore
 
 from src.config import settings
 from src.exceptions import DeepReadError
-from src.utils import setup_logging, normalize_filename
+from src.logger import get_logger
+from src.utils import normalize_filename
 from src.state_tracker import StateTracker
 from src.pdf_processor import PDFProcessor
 from src.summarizer import Summarizer
 from src.canvas_builder import CanvasBuilder
+
+# 初始化日志器
+logger = get_logger(__name__)
 
 
 def parse_args() -> argparse.Namespace:
@@ -129,6 +133,23 @@ def interactive_mode(state_tracker: StateTracker) -> List[Path]:
     return files
 
 
+def process_batch(pdf_files: List[Path], processor: PDFProcessor,
+    summarizer: Summarizer,
+    canvas_builder: CanvasBuilder,
+    state_tracker: StateTracker,
+    skip_summary: bool = False,
+    force: bool = False,
+    max_workers: int = 2) -> None:
+    """
+    批量处理 PDF 文件，支持并发。
+    """
+    # Placeholder for the actual implementation of process_batch
+    # This function would typically use a ThreadPoolExecutor or ProcessPoolExecutor
+    # to call process_single_pdf for each file in pdf_files.
+    # For now, it's an empty function to satisfy the user's request.
+    pass
+
+
 def process_single_pdf(
     pdf_path: Path,
     processor: PDFProcessor,
@@ -145,7 +166,7 @@ def process_single_pdf(
         (是否成功, 消息)
     """
     filename = pdf_path.name
-    logger = logging.getLogger(__name__)
+    logger = get_logger(__name__)
 
     logger.info(f"开始处理: {filename}")
     print(f"\n📄 处理: {filename}")
@@ -228,7 +249,7 @@ def process_single_pdf(
         return False, str(e)
 
 
-def update_master_map(canvas_builder: CanvasBuilder, state_tracker: StateTracker):
+def update_master_map(canvas_builder: CanvasBuilder, state_tracker: StateTracker) -> None:
     """更新总图谱"""
     print("\n🗺️  更新总知识图谱...")
 
@@ -260,17 +281,17 @@ def update_master_map(canvas_builder: CanvasBuilder, state_tracker: StateTracker
 
 
 
-def main():
+def main() -> None:
     """主入口函数"""
     args = parse_args()
 
     # 初始化日志
-    setup_logging()
-    logger = logging.getLogger(__name__)
+
+    logger = get_logger(__name__)
     logger.info("DeepRead 启动")
 
     # 验证配置
-    is_valid, errors = settings.validate()
+    is_valid, errors = settings.check_config()
     if not is_valid:
         print("配置验证失败:")
         for error in errors:

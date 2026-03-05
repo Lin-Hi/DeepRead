@@ -116,7 +116,7 @@ class PDFPreprocessor:
 class PDFProcessor:
     """PDF 处理器 - 协调预处理、转换和后处理"""
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.preprocessor = PDFPreprocessor()
 
     def process(
@@ -180,7 +180,7 @@ class PDFProcessor:
             if creation_date.startswith("D:"):
                 year_str = creation_date[2:6]
                 if year_str.isdigit():
-                    return year_str
+                    return str(year_str)
 
         # 尝试从 modification_date 提取
         mod_date = metadata.get("modification_date", "")
@@ -188,7 +188,7 @@ class PDFProcessor:
             if mod_date.startswith("D:"):
                 year_str = mod_date[2:6]
                 if year_str.isdigit():
-                    return year_str
+                    return str(year_str)
 
         return "0000"
 
@@ -275,7 +275,7 @@ class PDFProcessor:
             if marker_output_dir.exists():
                 shutil.rmtree(marker_output_dir, ignore_errors=True)
 
-    def _organize_assets(self, output_folder: Path, folder_name: str):
+    def _organize_assets(self, output_folder: Path, folder_name: str) -> None:
         """整理图片资源，更新 Markdown 中的图片链接"""
         md_file = output_folder / f"{folder_name}.md"
         if not md_file.exists():

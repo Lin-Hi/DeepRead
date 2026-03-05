@@ -8,16 +8,18 @@
 """
 
 
+from typing import Any, Dict, List, Optional
+
 class DeepReadError(Exception):
     """DeepRead 项目基础异常类"""
 
-    def __init__(self, message: str, error_code: str = None, details: dict = None):
+    def __init__(self, message: str, error_code: Optional[str] = None, details: Optional[Dict[str, Any]] = None):
         super().__init__(message)
         self.message = message
         self.error_code = error_code or "ERR_UNKNOWN"
         self.details = details or {}
 
-    def __str__(self):
+    def __str__(self) -> str:
         if self.details:
             return f"[{self.error_code}] {self.message} - Details: {self.details}"
         return f"[{self.error_code}] {self.message}"
@@ -135,7 +137,7 @@ class LLMTimeoutError(LLMRequestError):
 class LLMRateLimitError(LLMRequestError):
     """LLM API 速率限制"""
 
-    def __init__(self, model: str, retry_after: int = None):
+    def __init__(self, model: str, retry_after: Optional[int] = None):
         super().__init__(
             message=f"LLM rate limit exceeded: {model}",
             error_code="ERR_LLM_RATE_LIMIT",
@@ -179,7 +181,7 @@ class LLMInvalidJSONError(LLMRequestError):
 class LLMValidationError(LLMRequestError):
     """LLM 返回内容结构验证失败"""
 
-    def __init__(self, message: str, raw_response: str = "", missing_fields: list = None):
+    def __init__(self, message: str, raw_response: str = "", missing_fields: Optional[List[str]] = None):
         super().__init__(
             message=message,
             error_code="ERR_LLM_VALIDATION",

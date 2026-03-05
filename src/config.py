@@ -98,7 +98,7 @@ class Settings(BaseSettings):
         """报告目录"""
         return self.root_dir / self.reports_dir
 
-    def validate(self) -> tuple[bool, list[str]]:
+    def check_config(self) -> tuple[bool, list[str]]:
         """
         验证配置有效性
 

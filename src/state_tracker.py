@@ -12,7 +12,7 @@ import tempfile
 import shutil
 from pathlib import Path
 from datetime import datetime
-from typing import Optional
+from typing import Any, Optional
 from dataclasses import dataclass, field, asdict
 
 from src.config import settings
@@ -41,8 +41,8 @@ class StateTracker:
     - 原子写入（防止崩溃损坏）
     """
 
-    def __init__(self):
-        self.state_file = settings.state_file
+    def __init__(self, state_dir: Any = settings.state_dir) -> None:
+        self.state_file = state_dir / "state.json"
         self._state: dict = {}
         self._load()
 
@@ -104,7 +104,7 @@ class StateTracker:
 
     def get_next_unnamed_number(self) -> int:
         """获取下一个 UNNAMED 编号并递增计数器"""
-        current = self._state.get("unnamed_counter", 0)
+        current = int(str(self._state.get("unnamed_counter", 0)))
         self._state["unnamed_counter"] = current + 1
         self._save_atomic()
         return current + 1
@@ -176,7 +176,7 @@ class StateTracker:
 
         self._state["files"][filename] = {
             "hash": file_hash,
-            "processed_at": datetime.now().isoformat(),
+            "processed_at": int(datetime.now().timestamp()),
             "title": title,
             "folder_name": folder_name,
             "outputs": outputs,
