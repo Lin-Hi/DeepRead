@@ -43,8 +43,7 @@ Thumbs.db
 
 # Project specific - sensitive data
 .env
-.deepread/state.json
-.deepread/cache/
+.deepread/
 logs/*.log
 logs/llm_usage.jsonl
 
@@ -61,5 +60,4 @@ htmlcov/
 *.orig
 
 # Obsidian (if syncing vault)
-.obsidian/workspace.json
-.obsidian/workspaces.json
+.obsidian/
