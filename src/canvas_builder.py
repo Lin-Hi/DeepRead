@@ -227,11 +227,26 @@ class CanvasBuilder:
                 canvas_file = folder / f"{folder.name}.canvas"
 
                 if summary_file.exists():
+                    try:
+                        content = summary_file.read_text(encoding='utf-8')
+                        # 尝试提取 citekey
+                        citekey = ""
+                        for line in content.split('\n'):
+                            if line.startswith('citekey:'):
+                                citekey = line.split('citekey:')[1].strip()
+                                break
+                    except Exception:
+                        content = ""
+                        citekey = ""
+
                     papers.append({
+                        "id": f"paper_{len(papers)}",
                         "folder": folder.name,
                         "path": folder,
                         "has_summary": True,
-                        "has_canvas": canvas_file.exists()
+                        "has_canvas": canvas_file.exists(),
+                        "citekey": citekey,
+                        "summary_content": content
                     })
 
         return papers
@@ -249,7 +264,7 @@ class CanvasBuilder:
             y = 50 + row * 250
 
             nodes.append({
-                "id": f"paper_{i}",
+                "id": paper["id"],
                 "type": "file",
                 "file": str((paper["path"] / f"{paper['folder']}.canvas").relative_to(settings.root_dir)).replace("\\", "/"),
                 "x": x,
@@ -261,6 +276,30 @@ class CanvasBuilder:
         return nodes
 
     def _create_master_edges(self, papers: list) -> list:
-        """为总图谱创建关系边（预留接口）"""
-        # TODO: 实现基于关键词相似度的自动连线
-        return []
+        """为总图谱创建关系边（基于 citekey 匹配的基础推断）"""
+        edges = []
+        edge_count = 0
+        
+        for i, source_paper in enumerate(papers):
+            if not source_paper.get("citekey"):
+                continue
+                
+            citekey = source_paper["citekey"]
+            
+            for j, target_paper in enumerate(papers):
+                if i == j:
+                    continue
+                
+                # 如果目标文献的总结中提到了源文献的 citekey
+                if citekey in target_paper.get("summary_content", ""):
+                    edges.append({
+                        "id": f"master_edge_{edge_count}",
+                        "fromNode": source_paper["id"],
+                        "fromSide": "right",
+                        "toNode": target_paper["id"],
+                        "toSide": "left",
+                        "label": "related/cites"
+                    })
+                    edge_count += 1
+
+        return edges

@@ -16,6 +16,7 @@ tests/
 ├── test_dagre.py              # [IN: Canvas Nodes] [OUT: Layout Canvas JSON] - 测试布局算法并含 Fallback
 ├── test_llm.py                # [IN: Token API] [OUT: Summary JSON] - 测试阿里云百炼连接及 Token 长度限制
 ├── test_canvas_builder.py     # [IN: Summary Dict] [OUT: Canvas JSON 断言] - 针对 src/canvas_builder.py 的核心验证
+├── test_e2e_workflow.py       # [IN: Mock PDF+LLM] [OUT: 全链路断言] - 模拟测试全部通过 (process_single_pdf)
 ├── generate_test_canvas.py    # [IN: CanvasBuilder] [OUT: Canvas 文件] - 手动运行验证 v3 布局效果
 └── conftest.py                # [IN: pytest] [OUT: Fixtures] - pytest 全局 Fixtures 和环境模拟
 ```
@@ -41,5 +42,6 @@ python -m pytest tests/ -v
 3. 此目录下创建的所有 `.py` 文件，头部仍然必须遵守全局 L3 `[IN]/[OUT]/[POS]/[PROTOCOL]` 契约约束。
 
 ## 测试数据边界 (Fixtures Setup)
-- 本地静态长文本：根目录下 `FULLTEXT01.pdf` 及其副本用于模拟长/大型文件测试。
-- 若未来扩展外部数据（如图片），请建立 `tests/fixtures/` 目录统一管理。
+- **真实 PDF 测试**：`input-pdfs/` 目录下包含多种论文样本（单栏/双栏/公式/KTH 确相）
+- **E2E Mock 测试**：`test_e2e_workflow.py` 中使用 `MagicMock` 隔离外部依赖，全部 3 个测试用例通过
+- 若未来扩展外部数据（如图片），请建立 `tests/fixtures/` 目录统一管理

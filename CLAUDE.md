@@ -30,14 +30,14 @@
 ## 三、项目状态概览
 
 ### Phase 完成进度
-| Phase     | 名称         | 状态                           |
-| --------- | ------------ | ------------------------------ |
-| Phase 1   | 项目初始化   | ✅ 完成                         |
-| Phase 1.5 | 技术验证     | ✅ 完成                         |
-| Phase 2   | 核心功能开发 | ✅ 完成（所有源代码模块已创建） |
-| Phase 3   | 工作流整合   | ⏳ 待开始                       |
-| Phase 4   | 测试与优化   | ⏸️ 待定                         |
-| Phase 5   | 边界用例测试 | ⏸️ 待定                         |
+| Phase     | 名称         | 状态                            |
+| --------- | ------------ | ------------------------------- |
+| Phase 1   | 项目初始化   | ✅ 完成                          |
+| Phase 1.5 | 技术验证     | ✅ 完成                          |
+| Phase 2   | 核心功能开发 | ✅ 完成（所有源代码模块已创建）  |
+| Phase 3   | 工作流整合   | ✅ 完成（真实 PDF E2E 测试通过） |
+| Phase 4   | 测试与优化   | ⏳ 进行中                        |
+| Phase 5   | 边界用例测试 | ⏸️ 待定                          |
 
 ### 核心模块清单
 ```
@@ -83,3 +83,10 @@ src/
 - **L3 文件头格式**：必须严格遵循 `[IN]/[OUT]/[POS]/[PROTOCOL]` 格式，参考现有测试文件
 - **Plan 文件命名**：必须遵循 `YYYYMMDD-<功能简述>.md` 格式
 - **文件读取后再编辑**：必须先 Read 再 Edit，不能假设文件已缓存
+
+### 跑坑记录（Phase 3 新增）
+- **marker_single 路径**：不能依赖系统 PATH，要用 `sys.executable.parent / 'Scripts' / 'marker_single.exe'` 动态定位
+- **marker_single 参数**：使用 `--output_dir` 和 `--output_format`，不是 `--output`
+- **文件重命名冲突**：当使用 `--force` 重复处理时，先用 `Path.unlink()` 删除已存在的目标文件再 rename
+- **API 对齐**：`StateTracker` 函数名为 `compute_hash/is_processed/update_file_state`，非 `compute_file_hash/get_file_record`
+- **Canvas 调用签名**：`create_paper_canvas(summary_dict, paper_folder: Path, paper_name: str)`

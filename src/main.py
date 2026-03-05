@@ -13,16 +13,18 @@ import logging
 from pathlib import Path
 from typing import List, Optional
 
-# 将 src 目录添加到路径
-sys.path.insert(0, str(Path(__file__).parent))
+# Windows 终端字符编码崩溃备用·强制 UTF-8
+if sys.platform == "win32":
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+    sys.stderr.reconfigure(encoding="utf-8", errors="replace")
 
-from config import settings
-from exceptions import DeepReadError
-from utils import setup_logging, normalize_filename
-from state_tracker import StateTracker
-from pdf_processor import PDFProcessor
-from summarizer import Summarizer
-from canvas_builder import CanvasBuilder
+from src.config import settings
+from src.exceptions import DeepReadError
+from src.utils import setup_logging, normalize_filename
+from src.state_tracker import StateTracker
+from src.pdf_processor import PDFProcessor
+from src.summarizer import Summarizer
+from src.canvas_builder import CanvasBuilder
 
 
 def parse_args() -> argparse.Namespace:
@@ -148,56 +150,35 @@ def process_single_pdf(
     logger.info(f"开始处理: {filename}")
     print(f"\n📄 处理: {filename}")
 
-    # 检查是否需要处理（增量更新）
-    current_hash = state_tracker.compute_file_hash(pdf_path)
-    existing_record = state_tracker.get_file_record(filename)
-
-    if not force and existing_record:
-        if existing_record.get("hash") == current_hash:
-            logger.info(f"  文件未变化，跳过: {filename}")
-            print(f"   ✓ 已是最新版本，跳过")
-            return True, "skipped"
-        else:
-            logger.info(f"  文件有变化，重新处理: {filename}")
-            print(f"   📝 文件有变化，重新处理")
+    # 检查增量缓存（基于 StateTracker.is_processed）
+    if not force and state_tracker.is_processed(pdf_path):
+        logger.info(f"  文件未变化，跳过: {filename}")
+        print(f"   ✓ 已是最新版本，跳过")
+        return True, "skipped"
 
     try:
-        # Step 1: 预处理验证
-        print(f"   1️⃣  验证 PDF...", end=" ")
-        is_valid, error_msg = processor.validate_pdf(str(pdf_path))
-        if not is_valid:
-            logger.error(f"PDF 验证失败: {error_msg}")
-            print(f"失败\n      错误: {error_msg}")
-            return False, error_msg
-        print("✓")
+        # Step 1-4: PDFProcessor.process() 内部完成验证/元数据/转换/整理
+        print(f"   1️⃣  验证并转换 PDF → Markdown...")
+        output_folder, md_content, info = processor.process(pdf_path, force=force)
 
-        # Step 2: 提取元数据
-        print(f"   2️⃣  提取元数据...", end=" ")
-        metadata = processor.extract_metadata(str(pdf_path))
-        title = metadata.get("title", "")
-        year = str(metadata.get("year", ""))
-        first_author = metadata.get("first_author", "")
-        print(f"✓ ({title[:30]}...)")
-
-        # Step 3: 创建文件夹
-        folder_name = normalize_filename(title or filename, year, first_author)
-        output_folder = settings.output_path / folder_name
-        output_folder.mkdir(parents=True, exist_ok=True)
-        print(f"   3️⃣  输出目录: {output_folder.name}")
-
-        # Step 4: 转换 PDF → Markdown
-        print(f"   4️⃣  转换 PDF → Markdown...", end=" ")
-        md_content = processor.convert_to_markdown(str(pdf_path), str(output_folder))
+        folder_name = output_folder.name
         md_file = output_folder / f"{folder_name}.md"
-        md_file.write_text(md_content, encoding="utf-8")
-        print("✓")
+        title = info.get("title", "")
+        year = str(info.get("year", ""))
+        first_author = info.get("first_author", "")
+
+        # 跳过（已处理）
+        if info.get("status") == "skipped":
+            print(f"   ✓ 已处理，跳过")
+            return True, "skipped"
+
+        print(f"   ✓ 转换完成 → {folder_name}")
 
         # Step 5: 生成 Summary（可选跳过）
         summary_file = output_folder / "Summary.md"
         if not skip_summary:
             print(f"   5️⃣  生成 AI 总结...", end=" ")
-            summary = summarizer.generate_summary(md_content, metadata)
-            summary_file.write_text(summary, encoding="utf-8")
+            summarizer.generate_summary(md_content, summary_file)
             print("✓")
         else:
             print(f"   5️⃣  跳过 AI 总结")
@@ -205,27 +186,38 @@ def process_single_pdf(
         # Step 6: 生成单文献 Canvas
         print(f"   6️⃣  生成知识卡片...", end=" ")
         canvas_file = output_folder / f"{folder_name}.canvas"
+        # 如果没有 AI 总结，使用 metadata 构建基础 summary dict
+        if summary_file.exists():
+            # 读取已写入的 Summary 内容构建展示 dict
+            canvas_summary = {
+                "title": title or folder_name,
+                "year": year,
+                "first_author": first_author,
+            }
+        else:
+            canvas_summary = {
+                "title": title or folder_name,
+                "year": year,
+                "first_author": first_author,
+            }
         canvas_builder.create_paper_canvas(
-            str(summary_file) if summary_file.exists() else None,
-            str(canvas_file),
-            metadata
+            canvas_summary,
+            output_folder,
+            folder_name
         )
         print("✓")
 
         # Step 7: 更新状态追踪
-        outputs = [
-            str(md_file.relative_to(settings.root_dir)),
-            str(summary_file.relative_to(settings.root_dir)) if summary_file.exists() else None,
-            str(canvas_file.relative_to(settings.root_dir)),
-        ]
-        outputs = [o for o in outputs if o]
+        file_hash = StateTracker.compute_hash(pdf_path)
+        outputs = [str(md_file), str(canvas_file)]
+        if summary_file.exists():
+            outputs.append(str(summary_file))
 
-        state_tracker.update_file_record(
-            filename=filename,
-            file_hash=current_hash,
+        state_tracker.update_file_state(
+            pdf_path=pdf_path,
+            title=title,
             folder_name=folder_name,
-            outputs=outputs,
-            title=title
+            outputs=outputs
         )
 
         logger.info(f"处理完成: {filename}")
@@ -233,8 +225,8 @@ def process_single_pdf(
         return True, "success"
 
     except DeepReadError as e:
-        logger.error(f"处理失败 [{e.code}]: {e.message}")
-        print(f"   ❌ 失败: [{e.code}] {e.message}")
+        logger.error(f"处理失败 [{e.error_code}]: {e.message}")
+        print(f"   ❌ 失败: [{e.error_code}] {e.message}")
         return False, str(e)
     except Exception as e:
         logger.exception(f"处理时发生未知错误: {e}")
@@ -246,16 +238,23 @@ def update_master_map(canvas_builder: CanvasBuilder, state_tracker: StateTracker
     """更新总图谱"""
     print("\n🗺️  更新总知识图谱...")
 
-    records = state_tracker.get_all_records()
+    # 使用真实 API: get_all_processed_files() 返回文件名列表
+    processed_filenames = state_tracker.get_all_processed_files()
     papers = []
 
-    for filename, record in records.items():
-        if record.get("status") == "completed":
-            papers.append({
-                "folder_name": record.get("folder_name", ""),
-                "title": record.get("title", ""),
-                "summary_path": settings.output_path / record.get("folder_name", "") / "Summary.md"
-            })
+    for filename in processed_filenames:
+        # 从 state 中读取 FileState
+        # get_file_state 接受 pdf_path，这里用虚拟路径，仅为获取状态
+        file_state = state_tracker._state["files"].get(filename)
+        if not file_state:
+            continue
+        folder_name = file_state.get("folder_name", "")
+        title = file_state.get("title", "")
+        papers.append({
+            "folder_name": folder_name,
+            "title": title,
+            "summary_path": settings.output_path / folder_name / "Summary.md"
+        })
 
     if not papers:
         print("   没有已完成的文献")
@@ -302,11 +301,8 @@ def main():
 
         files_to_process = []
         for pdf_path in all_pdfs:
-            filename = pdf_path.name
-            current_hash = state_tracker.compute_file_hash(pdf_path)
-            existing = state_tracker.get_file_record(filename)
-
-            if not existing or existing.get("hash") != current_hash or args.force:
+            # 使用真实 API: is_processed() 综合检查 hash + 输出完整性
+            if args.force or not state_tracker.is_processed(pdf_path):
                 files_to_process.append(pdf_path)
 
         print(f"   发现 {len(all_pdfs)} 个 PDF，其中 {len(files_to_process)} 个需要处理")
@@ -316,12 +312,21 @@ def main():
         files_to_process = []
         for f in args.file:
             pdf_path = Path(f)
-            if not pdf_path.is_absolute():
-                pdf_path = settings.input_path / pdf_path
+            # 1) 绝对路径直接使用
+            if pdf_path.is_absolute():
+                pass
+            # 2) 相对路径直接存在（如 input-pdfs/file.pdf）则转为绝对
+            elif pdf_path.exists():
+                pdf_path = pdf_path.resolve()
+            # 3) 仅有文件名则拼接 input_path
+            else:
+                pdf_path = settings.input_path / pdf_path.name
+
             if pdf_path.exists():
                 files_to_process.append(pdf_path)
             else:
                 print(f"警告: 文件不存在 - {f}")
+
 
     else:
         # 交互模式

@@ -15,7 +15,7 @@ import fitz  # PyMuPDF
 
 from .config import settings
 from .exceptions import PDFAccessError, MarkerProcessingError
-from .utils import compute_file_hash, normalize_filename, sanitize_path
+from .utils import compute_file_hash, normalize_filename
 
 
 class PDFPreprocessor:
@@ -147,20 +147,6 @@ class PDFProcessor:
         folder_name = normalize_filename(title or "Untitled", author or "Unknown", year)
         output_folder = settings.output_path / folder_name
 
-        # 检查是否已处理过（基于 state.json）
-        from .state_tracker import state_tracker
-        file_hash = compute_file_hash(pdf_path)
-
-        existing_record = state_tracker.get_file_record(pdf_path.name)
-        if existing_record and existing_record.get("hash") == file_hash and not force:
-            # 已经处理过且文件未变化
-            md_file = output_folder / f"{folder_name}.md"
-            if md_file.exists():
-                return output_folder, md_file.read_text(encoding='utf-8'), {
-                    "status": "skipped",
-                    "message": "File already processed and unchanged"
-                }
-
         # 4. 创建输出目录
         output_folder.mkdir(parents=True, exist_ok=True)
         assets_folder = output_folder / "assets"
@@ -169,26 +155,18 @@ class PDFProcessor:
         # 5. 使用 Marker 转换 PDF
         markdown_content = self._convert_with_marker(pdf_path, output_folder, folder_name)
 
-        # 6. 移动/重命名图片资源
+        # 6. 整理图片资源
         self._organize_assets(output_folder, folder_name)
 
-        # 7. 更新状态追踪
-        state_tracker.update_file(
-            filename=pdf_path.name,
-            file_hash=file_hash,
-            title=title or "Untitled",
-            folder_name=folder_name,
-            outputs=[
-                str(output_folder / f"{folder_name}.md"),
-                str(assets_folder),
-            ]
-        )
-
+        # 返回带元数据的处理结果（状态追踪交由 main.py 统一管理）
         return output_folder, markdown_content, {
             "status": "success",
             "folder_name": folder_name,
             "page_count": info["page_count"],
             "has_text_layer": info["has_text_layer"],
+            "title": title or "",
+            "year": year,
+            "first_author": author or "",
         }
 
     def _extract_year(self, info: dict) -> str:
@@ -225,11 +203,26 @@ class PDFProcessor:
         marker_output_dir = output_folder / "_marker_temp"
 
         try:
+            # 动态定位 marker_single（与 python.exe 同级的 Scripts 目录）
+            import sys as _sys
+            _py_dir = Path(_sys.executable).parent  # e.g. C:\...\PY_3_10\
+            # 先尝试 Scripts 子目录（Windows conda 标准安装位置）
+            marker_exe = _py_dir / "Scripts" / "marker_single.exe"
+            if not marker_exe.exists():
+                # 尝试直接在同级目录
+                marker_exe = _py_dir / "marker_single.exe"
+            if not marker_exe.exists():
+                marker_exe = _py_dir / "marker_single"
+            if not marker_exe.exists():
+                raise MarkerProcessingError(
+                    f"marker_single not found, searched in: {_py_dir}/Scripts and {_py_dir}"
+                )
+
             # 构建 Marker 命令
             cmd = [
-                "marker_single",
+                str(marker_exe),
                 str(pdf_path),
-                str(marker_output_dir),
+                "--output_dir", str(marker_output_dir),
                 "--output_format", "markdown",
             ]
 
@@ -257,6 +250,9 @@ class PDFProcessor:
             # 读取内容并重命名文件
             md_content = md_files[0].read_text(encoding='utf-8')
             target_md_path = output_folder / f"{folder_name}.md"
+            # 如果目标已存在（如 --force 重复执行），先删除再移动
+            if target_md_path.exists():
+                target_md_path.unlink()
             md_files[0].rename(target_md_path)
 
             # 移动图片资源

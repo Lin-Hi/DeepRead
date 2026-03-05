@@ -176,6 +176,20 @@ class LLMInvalidJSONError(LLMRequestError):
         )
 
 
+class LLMValidationError(LLMRequestError):
+    """LLM 返回内容结构验证失败"""
+
+    def __init__(self, message: str, raw_response: str = "", missing_fields: list = None):
+        super().__init__(
+            message=message,
+            error_code="ERR_LLM_VALIDATION",
+            details={
+                "raw_response_preview": raw_response[:200] if raw_response else "",
+                "missing_fields": missing_fields or []
+            }
+        )
+
+
 # ========== Canvas 相关异常 ==========
 
 class CanvasLayoutError(DeepReadError):

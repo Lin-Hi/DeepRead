@@ -121,3 +121,12 @@ dateread: {YYYY-MM-DD}
 
 Generate the summary now based on the paper provided.
 """
+
+def get_summary_prompt(markdown_content: str, research_context: str = None) -> str:
+    """构建用于生成 Summary 的完整 Prompt"""
+    context_section = ""
+    if research_context:
+        context_section = f"\n## Research Context Guidelines\n{research_context}\n"
+    
+    # 将全文和上下文注入基础 Prompt 中
+    return f"{SUMMARY_PROMPT}\n{context_section}\n## Paper Content\n{markdown_content}"
