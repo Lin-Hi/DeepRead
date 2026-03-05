@@ -48,6 +48,6 @@ python -m pytest tests/ -v
 3. 此目录下创建的所有 `.py` 文件，头部仍然必须遵守全局 L3 `[IN]/[OUT]/[POS]/[PROTOCOL]` 契约约束。
 
 ## 测试数据边界 (Fixtures Setup)
-- **真实 PDF 测试**：`input-pdfs/` 目录下包含多种论文样本（单栏/双栏/公式/KTH 确相）
-- **E2E Mock 测试**：`test_e2e_workflow.py` 中使用 `MagicMock` 隔离外部依赖，全部 3 个测试用例通过
-- 若未来扩展外部数据（如图片），请建立 `tests/fixtures/` 目录统一管理
+- **真实基准测试**：`input-pdfs/` 目录下存放用于生产演示的正常论文样本（单栏/双栏/公式/KTH 确相）
+- **边界异常用例**：`tests/fixtures/pdfs/` 目录下固化了防暴与性能护栏所需的 7 种极度异常/结构畸变的实体样本用于手工触发边界行为。
+- **E2E Mock 测试**：`test_e2e_workflow.py` 中使用 `MagicMock` 及动态写文本代替真实外部数据隔离，全部用例秒级通过

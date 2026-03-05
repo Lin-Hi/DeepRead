@@ -1,6 +1,23 @@
 {
-	"nodes":[
-		{"id":"paper_0","type":"file","file":"01-Literature/2026-ServerlessComputingASurveyof/2026-ServerlessComputingASurveyof.canvas","x":50,"y":50,"width":350,"height":200}
-	],
-	"edges":[]
+  "nodes": [
+    {
+      "id": "paper_0",
+      "type": "file",
+      "file": "01-Literature/2026-ServerlessComputingASurveyof/2026-ServerlessComputingASurveyof.canvas",
+      "x": 50,
+      "y": 50,
+      "width": 350,
+      "height": 200
+    },
+    {
+      "id": "paper_1",
+      "type": "file",
+      "file": "01-Literature/2026-untitled/2026-untitled.canvas",
+      "x": 450,
+      "y": 50,
+      "width": 350,
+      "height": 200
+    }
+  ],
+  "edges": []
 }
