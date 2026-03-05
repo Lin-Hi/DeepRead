@@ -1095,3 +1095,32 @@ reports/
 | v3   | 20260304 | 补充配置管理、Prompts 目录、测试框架                                                                                                                                |
 | v4   | 20260304 | 基于 plan-reviewer 评审意见：新增 Phase 1.5 技术验证、补全 state.json 设计、错误码、边界用例、文件名格式改为 year-author-titleSlug                                  |
 | v5   | 20260304 | 基于 plan-reviewer 深度评审：移除扩展功能（多 Context 支持），新增 dagre 布局验证和 PDF 预处理验证，补充 state.json 原子写入和错误汇总报告，新增 exceptions.py 模块 |
+| v5.1 | 20260305 | Phase 3 完成：修复全链路 8 个 Bug，真实 PDF E2E 测试通过（RTX 4070 GPU + Marker）；新增 Phase 6 收尾计划                                                            |
+
+---
+
+## Phase 6: 项目收尾展示（待所有流程确认无误后执行）
+
+> **触发条件**：Phase 4 + Phase 5 全部通过，工具流稳定可靠后再执行。
+
+### 目标
+在 GitHub 仓库中提供一个完整的运行示例，帮助读者/评审者快速理解工具效果。
+
+### 待办清单
+
+- [ ] **加入示例 PDF**：将 `input-pdfs/3510611.pdf`（来源：https://dl.acm.org/doi/10.1145/3510611，ACM 论文《Serverless Computing: A Survey of Opportunities, Challenges, and Applications》）从 `.gitignore` 中单独排除并加入 git 跟踪
+- [ ] **加入示例输出**：将对应的 `01-Literature/2026-ServerlessComputingASurveyof/` 目录（含 `.md`、`Summary.md`、`.canvas`）加入 git 跟踪
+- [ ] **编写 README 示例章节**：包含运行命令、预期输出截图（Obsidian Canvas 展示图）
+- [ ] **最终 commit & push**
+
+### `.gitignore` 修改方式（届时执行）
+
+```gitignore
+# 排除整个目录...
+input-pdfs/
+01-Literature/
+
+# ...但保留示例文件（使用 ! 取反）
+!input-pdfs/3510611.pdf
+!01-Literature/2026-ServerlessComputingASurveyof/
+```
