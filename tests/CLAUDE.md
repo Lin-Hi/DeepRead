@@ -17,6 +17,11 @@ tests/
 ├── test_llm.py                # [IN: Token API] [OUT: Summary JSON] - 测试阿里云百炼连接及 Token 长度限制
 ├── test_canvas_builder.py     # [IN: Summary Dict] [OUT: Canvas JSON 断言] - 针对 src/canvas_builder.py 的核心验证
 ├── test_e2e_workflow.py       # [IN: Mock PDF+LLM] [OUT: 全链路断言] - 模拟测试全部通过 (process_single_pdf)
+├── test_utils.py              # [IN: src.utils] [OUT: 单元断言] - 7 个工具函数全覆盖 (29 用例)
+├── test_config.py             # [IN: src.config.Settings] [OUT: 路径/验证断言] - Settings 类单元测试 (13 用例)
+├── test_state_tracker.py      # [IN: src.state_tracker] [OUT: 状态CRUD断言] - StateTracker 全方法覆盖 (11 用例)
+├── test_pdf_processor.py      # [IN: src.pdf_processor (mock)] [OUT: 操作断言] - PDFPreprocessor+PDFProcessor (10 用例)
+├── test_summarizer.py         # [IN: src.summarizer (mock openai)] [OUT: LLM流断言] - Summarizer 全流程 (11 用例)
 ├── generate_test_canvas.py    # [IN: CanvasBuilder] [OUT: Canvas 文件] - 手动运行验证 v3 布局效果
 └── conftest.py                # [IN: pytest] [OUT: Fixtures] - pytest 全局 Fixtures 和环境模拟
 ```

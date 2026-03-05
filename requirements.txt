@@ -1,29 +1,145 @@
-# DeepRead 依赖列表
-# 安装命令: pip install -r requirements.txt
+﻿
+altgraph==0.17.4
+annotated-types==0.7.0
+anthropic==0.46.0
+anyio==4.12.1
+asgiref==3.7.2
+asttokens==2.4.1
+backports.asyncio.runner==1.2.0
+beautifulsoup4==4.14.3
+black==26.1.0
+blinker @ file:///home/conda/feedstock_root/build_artifacts/blinker_1698890160476/work
+build==1.1.1
+certifi @ file:///home/conda/feedstock_root/build_artifacts/certifi_1707022139797/work/certifi
+cffi==2.0.0
+cfgv==3.5.0
+charset-normalizer==3.4.4
+click==8.3.1
+colorama @ file:///home/conda/feedstock_root/build_artifacts/colorama_1666700638685/work
+contourpy @ file:///D:/bld/contourpy_1712429995466/work
+cryptography==46.0.5
+cycler @ file:///home/conda/feedstock_root/build_artifacts/cycler_1696677705766/work
+devtools==0.12.2
+distlib==0.4.0
+distro==1.9.0
+Django==5.0.2
+einops==0.8.2
+exceptiongroup==1.3.1
+executing==2.0.1
+filelock==3.25.0
+filetype==1.2.0
+Flask @ file:///home/conda/feedstock_root/build_artifacts/flask_1712667726126/work
+fonttools @ file:///D:/bld/fonttools_1712344718501/work
+fsspec==2026.2.0
+ftfy==6.3.1
+google-auth==2.48.0
+google-genai==1.65.0
+h11==0.16.0
+httpcore==1.0.9
+httpx==0.28.1
+huggingface_hub==0.36.2
+identify==2.6.17
+idna==3.11
+image==1.5.33
+imageio==2.34.0
+importlib_metadata @ file:///home/conda/feedstock_root/build_artifacts/importlib-metadata_1710971335535/work
+iniconfig==2.3.0
+intel-openmp==2024.0.2
+itsdangerous @ file:///home/conda/feedstock_root/build_artifacts/itsdangerous_1648147185463/work
+Jinja2 @ file:///home/conda/feedstock_root/build_artifacts/jinja2_1704966972576/work
+jiter==0.13.0
+joblib==1.5.3
+kiwisolver @ file:///D:/bld/kiwisolver_1695380033173/work
+librt==0.8.1
+markdown-it-py==4.0.0
+markdown2==2.5.5
+markdownify==1.2.2
+marker-pdf==1.10.2
+MarkupSafe @ file:///D:/bld/markupsafe_1706900062361/work
+matplotlib @ file:///D:/bld/matplotlib-suite_1712606009716/work
+mdurl==0.1.2
+mpld3 @ file:///home/conda/feedstock_root/build_artifacts/mpld3_1703344323768/work
+mpmath==1.3.0
+munkres==1.1.4
+mypy==1.19.1
+mypy_extensions==1.1.0
+networkx==3.4.2
+nodeenv==1.10.0
+numpy @ file:///D:/bld/numpy_1707225570061/work/dist/numpy-1.26.4-cp310-cp310-win_amd64.whl#sha256=6761da75b1528684e6bf
+4dabdbdded9d1eb4d0e9b299482c7ce152cfb3155106
+openai==1.109.1
+opencv-python-headless==4.11.0.86
+packaging @ file:///home/conda/feedstock_root/build_artifacts/packaging_1710075952259/work
+pandas @ file:///D:/bld/pandas_1712782177445/work
+pathspec==1.0.4
+pdftext==0.6.3
+pefile==2023.2.7
+pillow==10.2.0
+platformdirs==4.9.2
+pluggy==1.6.0
+ply @ file:///home/conda/feedstock_root/build_artifacts/ply_1712242996588/work
+pre_commit==4.5.1
+pyasn1==0.6.2
+pyasn1_modules==0.4.2
+pycparser==3.0
+pydantic==2.12.5
+pydantic-settings==2.13.1
+pydantic_core==2.41.5
+Pygments==2.17.2
+pyinstaller==6.6.0
+pyinstaller-hooks-contrib==2024.4
+PyMuPDF==1.27.1
+pyparsing @ file:///home/conda/feedstock_root/build_artifacts/pyparsing_1709721012883/work
+pypdfium2==4.30.0
+pyproject_hooks==1.0.0
+PyQt5==5.15.9
+PyQt5-sip @ file:///D:/bld/pyqt-split_1695418047530/work/pyqt_sip
+pytest==9.0.2
+pytest-asyncio==1.3.0
+python-dateutil @ file:///home/conda/feedstock_root/build_artifacts/python-dateutil_1709299778482/work
+python-discovery==1.1.0
+python-dotenv==1.2.2
+pytokens==0.4.1
+pytz @ file:///home/conda/feedstock_root/build_artifacts/pytz_1706886791323/work
+pywin32-ctypes==0.2.2
+PyYAML==6.0.3
+RapidFuzz==3.14.3
+regex==2024.11.6
+requests==2.32.5
+rich==14.3.3
+rsa==4.9.1
+safetensors==0.7.0
+scikit-learn==1.7.2
+scipy @ file:///C:/bld/scipy-split_1712285361191/work/dist/scipy-1.13.0-cp310-cp310-win_amd64.whl#sha256=72ec2368404d31
+8eb2199dba04ed76cf7d6320cd8f3cfd500b6d4ec86292d607
+sip @ file:///D:/bld/sip_1697300537181/work
+six @ file:///home/conda/feedstock_root/build_artifacts/six_1620240208055/work
+sniffio==1.3.1
+soupsieve==2.8.3
+sqlparse==0.4.4
+surya-ocr==0.17.1
+sympy==1.14.0
+tenacity==9.1.4
+threadpoolctl==3.6.0
+tokenizers==0.22.2
+toml @ file:///home/conda/feedstock_root/build_artifacts/toml_1604308577558/work
+tomli @ file:///home/conda/feedstock_root/build_artifacts/tomli_1644342247877/work
+torch==2.10.0+cu130
+torchaudio==2.10.0
+torchvision==0.25.0+cu130
+tornado @ file:///D:/bld/tornado_1708363274019/work
+tqdm==4.67.3
+transformers==4.57.6
+typing-inspection==0.4.2
+typing_extensions==4.15.0
+tzdata @ file:///home/conda/feedstock_root/build_artifacts/python-tzdata_1707747584337/work
+unicodedata2 @ file:///D:/bld/unicodedata2_1695848155043/work
+urllib3==2.6.3
+vc==2018.7.10
+virtualenv==21.1.0
+wcwidth==0.6.0
+websockets==16.0
+Werkzeug @ file:///home/conda/feedstock_root/build_artifacts/werkzeug_1712099422348/work
+zipp @ file:///home/conda/feedstock_root/build_artifacts/zipp_1695255097490/work
 
-# ========== 核心依赖 ==========
-pydantic>=2.0.0
-pydantic-settings>=2.0.0
-python-dotenv>=1.0.0
 
-# ========== PDF 处理 ==========
-marker-pdf>=1.10.0
-pymupdf>=1.27.0
-
-# ========== LLM API ==========
-openai>=1.0.0
-httpx>=0.25.0
-
-# ========== 工具库 ==========
-tenacity>=8.0.0  # 重试机制
-rich>=13.0.0     # 终端美化输出
-
-# ========== 可选依赖 ==========
-# dagre-python  # 不可用，使用固定模板布局替代
-networkx>=3.0   # 图算法（备用）
-
-# ========== 开发依赖 ==========
-pytest>=7.0.0
-pytest-asyncio>=0.21.0
-black>=23.0.0    # 代码格式化
-mypy>=1.0.0      # 类型检查
