@@ -28,9 +28,9 @@ class Settings(BaseSettings):
     )
 
     # ========== API 配置 ==========
-    api_base_url: str = "https://coding.dashscope.aliyuncs.com/v1"
-    api_key: str = ""  # 必填，从 .env 读取
-    model: str = "kimi-k2.5"
+    api_base_url: str = ""  # 必填，从 .env 读取 (API_BASE_URL)
+    api_key: str = ""       # 必填，从 .env 读取 (API_KEY)
+    model: str = ""         # 必填，从 .env 读取 (MODEL)
 
     # ========== 路径配置 ==========
     input_dir: str = "input-pdfs"

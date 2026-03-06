@@ -41,7 +41,7 @@ class StateTracker:
     - 原子写入（防止崩溃损坏）
     """
 
-    def __init__(self, state_dir: Any = settings.state_dir) -> None:
+    def __init__(self, state_dir: Path = settings.state_path) -> None:
         self.state_file = state_dir / "state.json"
         self._state: dict = {}
         self._load()

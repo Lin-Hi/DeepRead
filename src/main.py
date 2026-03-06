@@ -39,19 +39,19 @@ def parse_args() -> argparse.Namespace:
         epilog="""
 示例:
   # 交互模式（逐个输入文件名）
-  python main.py
+  python -m src.main
 
   # 批量处理所有未识别文件
-  python main.py --batch
+  python -m src.main --batch
 
   # 指定单个或多个文件
-  python main.py --file paper1.pdf paper2.pdf
+  python -m src.main --file paper1.pdf paper2.pdf
 
   # 强制重新处理
-  python main.py --file paper.pdf --force
+  python -m src.main --file paper.pdf --force
 
   # 仅重建总图谱
-  python main.py --rebuild-map
+  python -m src.main --rebuild-map
         """
     )
 

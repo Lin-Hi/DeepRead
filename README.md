@@ -58,7 +58,7 @@ pip install -r requirements.txt
 4. **配置 API Key**
 ```bash
 cp .env.example .env
-# 编辑 .env 文件，填入你的阿里百炼 API Key
+# 编辑 .env 文件，填入你的 API Key、Base URL 和模型名称
 ```
 
 5. **准备 PDF 文件**
@@ -71,30 +71,30 @@ mv your-paper.pdf input-pdfs/
 
 #### 交互模式（默认）
 ```bash
-python src/main.py
+python -m src.main
 # 输入文件名（如 paper.pdf），空行结束
 ```
 
 #### 批量处理
 ```bash
-python src/main.py --batch
+python -m src.main --batch
 # 自动处理 input-pdfs/ 中所有未处理的 PDF
 ```
 
 #### 指定文件
 ```bash
-python src/main.py --file paper1.pdf paper2.pdf
+python -m src.main --file paper1.pdf paper2.pdf
 ```
 
 #### 强制重新处理
 ```bash
-python src/main.py --force
+python -m src.main --force
 # 忽略 state.json，重新处理所有文件
 ```
 
 #### 重建总图谱
 ```bash
-python src/main.py --rebuild-map
+python -m src.main --rebuild-map
 # 根据已处理的文献重新生成 MasterMap.canvas
 ```
 
@@ -134,9 +134,10 @@ DeepRead/
 ├── tests/                  # 测试代码目录
 ├── logs/                   # 日志文件目录
 ├── reports/                # 技术验证报告目录
+├── .env                    # 个人配置（不入 Git）
+├── .env.example            # 配置模板示例
 ├── README.md               # 本文件
-├── CLAUDE.md               # Claude Code 行为准则
-├── RESEARCH_CONTEXT.md     # 研究领域规则
+├── CLAUDE.md               # 开发规范
 └── requirements.txt        # 依赖列表
 ```
 
@@ -197,7 +198,7 @@ python -m src.main --file 3510611.pdf
 ## 技术栈
 
 - **PDF 处理**: marker-pdf, surya-ocr, pdftext, pymupdf
-- **LLM 服务**: 阿里百炼 (OpenAI 兼容协议)
+- **LLM 服务**: 任意兼容 OpenAI SDK 的语言模型服务（如 OpenAI、Kimi、DeepSeek 等）
 - **配置管理**: pydantic-settings
 - **布局算法**: dagre-python
 - **测试框架**: pytest
