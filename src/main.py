@@ -167,6 +167,7 @@ def process_single_pdf(
     """
     filename = pdf_path.name
     logger = get_logger(__name__)
+    from time import time as _t
 
     logger.info(f"开始处理: {filename}")
     print(f"\n📄 处理: {filename}")
@@ -193,21 +194,20 @@ def process_single_pdf(
             print(f"   ✓ 已处理，跳过")
             return True, "skipped"
 
-        print(f"   ✓ 转换完成 → {folder_name}")
-
         # Step 5: 生成 Summary（可选跳过）
         summary_file = output_folder / "Summary.md"
         summary_data = {}  # 用于传递给 Canvas
         if not skip_summary:
-            print(f"   5️⃣  生成 AI 总结...", end=" ")
+            _t5 = _t()
+            print(f"   [5/6] AI 摘要生成中...", flush=True)
             summary_data = summarizer.generate_summary(md_content, summary_file)
-            print("✓")
+            print(f"          [OK] {_t()-_t5:.1f}s")
         else:
-            print(f"   5️⃣  跳过 AI 总结（Canvas 内容将为占位符）")
+            print(f"   [5/6] 跳过 AI 总结（Canvas 内容将为占位符）")
 
         # Step 6: 生成单文献 Canvas
-        # 将 AI 总结字段 + 元数据字段合并为 canvas 输入
-        print(f"   6️⃣  生成知识卡片...", end=" ")
+        _t6 = _t()
+        print(f"   [6/6] 生成知识卡片...", end="", flush=True)
         canvas_file = output_folder / f"{folder_name}.canvas"
         canvas_input = {
             "title": title or folder_name,
@@ -220,7 +220,7 @@ def process_single_pdf(
             output_folder,
             folder_name
         )
-        print("✓")
+        print(f" [OK] {_t()-_t6:.1f}s")
 
         # Step 7: 更新状态追踪
         file_hash = StateTracker.compute_hash(pdf_path)
@@ -396,7 +396,7 @@ def main() -> None:
     print(f"\n详细日志: {settings.log_path}/deepread_*.log")
     print(f"{'='*50}\n")
 
-    logger.info(f"处理完成: 成功 {success_count}/{len(files_to_process)}")
+
 
     # 如果有失败，返回非零退出码
     if failed_files:

@@ -143,11 +143,20 @@ class Summarizer:
         """调用 LLM，失败时重试"""
         for attempt in range(self.max_retries):
             try:
-                return self._call_llm(prompt)
+                if attempt > 0:
+                    wait = 5 * attempt
+                    print(f"          [重试 {attempt+1}/{self.max_retries}] 等待 {wait}s 后重试...",
+                          flush=True)
+                    time.sleep(wait)
+                print(f"          正在等待 AI 回复...", end="", flush=True)
+                t0 = time.time()
+                result = self._call_llm(prompt)
+                print(f" [OK] {time.time()-t0:.1f}s")
+                return result
             except Exception as e:
+                print(f" [失败] {e}")
                 if attempt == self.max_retries - 1:
                     raise LLMRequestError(f"Failed to generate summary: {e}")
-                time.sleep(5 * (attempt + 1))
         raise RuntimeError("Unreachable")
 
     def _call_llm(self, prompt: str) -> str:

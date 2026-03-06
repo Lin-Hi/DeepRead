@@ -9,6 +9,7 @@
 import shutil
 import subprocess
 from pathlib import Path
+from time import time as _time
 from typing import Optional, Tuple
 
 import fitz  # PyMuPDF
@@ -70,11 +71,14 @@ class PDFPreprocessor:
             if page_count > 500:
                 return False, "ERR_PDF_TOO_LARGE", info
 
-            # 6. 检查文本层
-            if page_count > 0:
-                first_page = doc[0]
-                text = first_page.get_text()
-                info["has_text_layer"] = len(text.strip()) > 50
+            # 6. 抄样前 5 页遍识文字层（多数投票）
+            sample_pages = min(5, page_count)
+            pages_with_text = 0
+            for i in range(sample_pages):
+                page_text = doc[i].get_text()
+                if len(page_text.strip()) > 50:
+                    pages_with_text += 1
+            info["has_text_layer"] = pages_with_text > sample_pages // 2
 
             # 7. 提取元数据
             metadata = doc.metadata
@@ -140,7 +144,10 @@ class PDFProcessor:
             raise PDFAccessError(f"PDF validation failed: {error_code}", error_code)
 
         # 2. 提取标题和作者
+        _t0 = _time()
+        print("  [1/4] 预扫描: 提取元数据...", end="", flush=True)
         title, author = self.preprocessor.extract_title_and_author(info)
+        print(f" [OK] {_time()-_t0:.1f}s | has_text_layer={info['has_text_layer']}")
 
         # 3. 生成规范化文件夹名
         year = self._extract_year(info)
@@ -153,10 +160,17 @@ class PDFProcessor:
         assets_folder.mkdir(exist_ok=True)
 
         # 5. 使用 Marker 转换 PDF
-        markdown_content = self._convert_with_marker(pdf_path, output_folder, folder_name)
+        _t1 = _time()
+        markdown_content = self._convert_with_marker(
+            pdf_path, output_folder, folder_name, info["has_text_layer"]
+        )
+        print(f"  [3/4] PDF -> Markdown: [OK] {_time()-_t1:.1f}s")
 
         # 6. 整理图片资源
+        _t2 = _time()
+        print("  [4/4] 整理图片资源...", end="", flush=True)
         self._organize_assets(output_folder, folder_name)
+        print(f" [OK] {_time()-_t2:.1f}s")
 
         # 返回带元数据的处理结果（状态追踪交由 main.py 统一管理）
         return output_folder, markdown_content, {
@@ -196,10 +210,10 @@ class PDFProcessor:
         self,
         pdf_path: Path,
         output_folder: Path,
-        folder_name: str
+        folder_name: str,
+        has_text_layer: bool = True,
     ) -> str:
         """使用 Marker 将 PDF 转换为 Markdown"""
-        # Marker 输出目录（Marker 会创建子目录）
         marker_output_dir = output_folder / "_marker_temp"
 
         try:
@@ -218,6 +232,19 @@ class PDFProcessor:
                     f"marker_single not found, searched in: {_py_dir}/Scripts and {_py_dir}"
                 )
 
+            # 检测 GPU 可用性，决定运行设备
+            import torch as _torch
+            use_cuda = _torch.cuda.is_available()
+            device = "cuda" if use_cuda else "cpu"
+            if use_cuda:
+                gpu_name = _torch.cuda.get_device_name(0)
+                print(f"  [2/4] PDF -> Markdown | 设备: CUDA ({gpu_name})")
+            else:
+                print("  [2/4] PDF -> Markdown | 设备: CPU")
+
+            # 路由策略：纯图像 PDF 强制全量 OCR
+            print(f"         策略: {'pdftext 直接提取 (有文字层)' if has_text_layer else 'Surya 全量 OCR (扫描版)'}")
+
             # 构建 Marker 命令
             cmd = [
                 str(marker_exe),
@@ -226,20 +253,52 @@ class PDFProcessor:
                 "--output_format", "markdown",
             ]
 
-            # 执行转换
-            result = subprocess.run(
+            # 扫描版 PDF 强制 OCR，跳过文字层直接走 Surya
+            if not has_text_layer:
+                cmd.append("--force_ocr")
+
+            # GPU 可用时增大 batch_size 以提升吞吐
+            if use_cuda:
+                cmd += [
+                    "--layout_batch_size", "8",
+                    "--detection_batch_size", "8",
+                    "--recognition_batch_size", "32",
+                ]
+
+            # 构建子进程环境，显式指定 TORCH_DEVICE 防止回落 CPU
+            # OMP_NUM_THREADS=1 消除 Windows MKL + KMeans 的内存泄漏警告
+            import os as _os
+            env = _os.environ.copy()
+            env["TORCH_DEVICE"] = device
+            env["OMP_NUM_THREADS"] = "1"
+
+            # 用 Popen 流式读取 Marker 输出的进度信息
+            proc = subprocess.Popen(
                 cmd,
-                capture_output=True,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
                 text=True,
-                timeout=600,  # 10 分钟超时
                 encoding='utf-8',
-                errors='ignore'
+                errors='ignore',
+                env=env,
             )
 
-            if result.returncode != 0:
+            # 实时打印 Marker 的关键进度行（过滤空行和 tqdm 噪音）
+            _skip_patterns = ("%|", "it/s", "B/s")
+            stderr_lines: list[str] = []
+            assert proc.stderr is not None
+            for line in proc.stderr:
+                line = line.rstrip()
+                stderr_lines.append(line)
+                if line and not any(p in line for p in _skip_patterns):
+                    print(f"         {line}")
+
+            proc.wait(timeout=600)
+
+            if proc.returncode != 0:
                 raise MarkerProcessingError(
-                    f"Marker conversion failed: {result.stderr}",
-                    details={"stdout": result.stdout, "stderr": result.stderr}
+                    f"Marker conversion failed (exit {proc.returncode})",
+                    details={"stderr": "\n".join(stderr_lines[-20:])}
                 )
 
             # 查找生成的 Markdown 文件
