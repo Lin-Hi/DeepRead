@@ -205,26 +205,17 @@ python -m src.main --file 3510611.pdf
 
 ## 配置说明
 
-编辑 `.env` 文件配置以下选项：
+复制 `.env.example` 为 `.env` 并填入实际值：
 
 ```env
-# API 配置（必填）
-API_KEY=sk-your-api-key-here
-API_BASE_URL=https://coding.dashscope.aliyuncs.com/v1
-MODEL=kimi-k2.5
+# API 密鑰（必填）
+API_KEY=your-api-key-here
 
-# 路径配置
-INPUT_DIR=input-pdfs
-OUTPUT_DIR=01-Literature
-KNOWLEDGE_MAP_DIR=00-KnowledgeMap
+# API 接入端点 - 任何兼容 OpenAI SDK 的服务均可（必填）
+API_BASE_URL=https://api.anthropic.com/v1
 
-# 处理配置
-MAX_RETRIES=3
-TIMEOUT_SECONDS=300
-BATCH_SIZE=10
-
-# 日志配置
-LOG_LEVEL=INFO
+# 模型名称（必填）
+MODEL=claude-3-5-sonnet-20241022
 ```
 
 ## 增量更新机制
@@ -252,45 +243,6 @@ LOG_LEVEL=INFO
 
 详细日志保存在 `logs/deepread_YYYYMMDD_HHMMSS.log`
 
-## 开发计划
-
-详见 [.claude/plans/20260304-deepread-plan-v5.md](.claude/plans/20260304-deepread-plan-v5.md)
-
-### Phase 1: 项目初始化 ✅
-- 创建目录结构
-- 编写 README.md
-- 编写 RESEARCH_CONTEXT.md
-- 创建 .gitignore 和 .env.example
-
-### Phase 1.5: 技术验证 🔄
-- Marker 基准测试
-- Obsidian Canvas Schema 验证
-- LLM 请求策略测试
-- dagre 布局验证
-- PDF 预处理检查
-
-### Phase 2: 核心功能开发 📋
-- 配置模块
-- 状态追踪模块
-- PDF 处理模块
-- AI 总结模块
-- Canvas 生成模块
-
-### Phase 3: 工作流整合 📋
-- 主脚本开发
-- 命令行参数解析
-- 错误汇总报告
-
-### Phase 4: 测试与优化 📋
-- 单元测试
-- 端到端测试
-- 性能优化
-
-### Phase 5: 边界用例测试 📋
-- 异常 PDF 处理
-- LLM 异常测试
-- 状态追踪测试
-
 ## 贡献指南
 
 欢迎提交 Issue 和 Pull Request！
@@ -303,4 +255,3 @@ MIT License
 
 - [Marker](https://github.com/VikParuchuri/marker) - 优秀的 PDF 转 Markdown 工具
 - [Obsidian](https://obsidian.md/) - 强大的知识管理工具
-- [阿里百炼](https://bailian.console.aliyun.com/) - LLM 服务提供商
